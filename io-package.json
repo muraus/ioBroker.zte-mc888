@@ -79,17 +79,17 @@
     ],
     "globalDependencies": [
       {
-        "admin": ">=7.6.17"
+        "admin": ">=7.6.20"
       }
     ],
-    "messagebox": false,
-    "protectedNative": [
-      "password"
-    ],
-    "encryptedNative": [
-      "password"
-    ]
+    "messagebox": false
   },
+  "protectedNative": [
+    "password"
+  ],
+  "encryptedNative": [
+    "password"
+  ],
   "native": {
     "ip": "192.168.0.1",
     "useLogin": false,
