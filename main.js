@@ -20,8 +20,14 @@ class ZteMc888 extends utils.Adapter {
         });
 
         this.pollTimer = null;
+        /** @type {ZteClient|null} */
         this.client = null;
         this.statesCreated = false;
+
+        // Defaults, overwritten from the instance config in onReady().
+        this.pollIntervalMs = 30000;
+        this.webUiPriority = true;
+        this.graceMs = 5 * 60 * 1000;
 
         // Session state for the "web UI has priority" handling.
         //   sessionActive  - true while we believe we hold a login session
@@ -124,6 +130,7 @@ class ZteMc888 extends utils.Adapter {
                 native: {},
             });
 
+            /** @type {{id: string, name: string, type: ioBroker.CommonType, role: string, unit?: string}[]} */
             const sccStates = [
                 { id: 'active', name: 'Active', type: 'boolean', role: 'indicator', unit: undefined },
                 { id: 'pci', name: 'PCI', type: 'number', role: 'value', unit: undefined },
@@ -153,6 +160,9 @@ class ZteMc888 extends utils.Adapter {
     }
 
     async poll() {
+        if (!this.client) {
+            return;
+        }
         try {
             // 1) Read with whatever session we currently hold. If we still hold
             //    a login session the router returns the full field set; if we
@@ -163,6 +173,11 @@ class ZteMc888 extends utils.Adapter {
             // Without login there is nothing more we can do than the public
             // fields, so publish and finish early.
             if (!this.config.useLogin) {
+                if (!raw) {
+                    throw new Error(
+                        'Router did not answer (enable debug logging to see the underlying transport error).',
+                    );
+                }
                 await this._publish(raw, !this._hasFullData(raw));
                 return;
             }
@@ -176,19 +191,17 @@ class ZteMc888 extends utils.Adapter {
                 if (this.webUiPriority && this.graceMs > 0) {
                     this.kickedUntil = Date.now() + this.graceMs;
                     this.log.info(
-                        'Lost the router session (another login took over, e.g. the web UI). '
-                        + `Backing off for ${Math.round(this.graceMs / 60000)} min before logging in `
-                        + 'again so the web UI stays usable. Signal values are kept at their last '
-                        + 'value in the meantime.',
+                        'Lost the router session (another login took over, e.g. the web UI). ' +
+                            `Backing off for ${Math.round(this.graceMs / 60000)} min before logging in ` +
+                            'again so the web UI stays usable. Signal values are kept at their last ' +
+                            'value in the meantime.',
                     );
                 }
             }
 
             // 3) (Re-)acquire a session only when we have full-field data missing
             //    AND we are not currently backing off for the web UI.
-            const backingOff = this.webUiPriority
-                && this.kickedUntil
-                && Date.now() < this.kickedUntil;
+            const backingOff = this.webUiPriority && this.kickedUntil && Date.now() < this.kickedUntil;
 
             if (!full && !backingOff) {
                 await this.client.login(this.config.user, this.config.password);
@@ -198,10 +211,10 @@ class ZteMc888 extends utils.Adapter {
             }
 
             const haveFull = this._hasFullData(raw);
-            if (!this._hasSignalData(raw)) {
+            if (!raw || !this._hasSignalData(raw)) {
                 throw new Error(
-                    'Router returned no signal data. Check credentials and field '
-                    + 'names (enable debug logging to see the raw response).',
+                    'Router returned no signal data. Check credentials and field ' +
+                        'names (enable debug logging to see the raw response).',
                 );
             }
 
@@ -215,8 +228,8 @@ class ZteMc888 extends utils.Adapter {
                     this.kickedUntil = Date.now() + this.graceMs;
                 }
                 this.log.info(
-                    'Router reports another active login (result=3). Skipping this poll '
-                    + 'and retrying later without kicking the other session.',
+                    'Router reports another active login (result=3). Skipping this poll ' +
+                        'and retrying later without kicking the other session.',
                 );
             } else {
                 this.log.warn(`Poll failed: ${e.message}`);
@@ -232,9 +245,13 @@ class ZteMc888 extends utils.Adapter {
     /**
      * Read all fields, swallowing transport errors into a null result so the
      * caller can decide how to proceed (login / back off / fail).
-     * @returns {Promise<Record<string,string>|null>}
+     *
+     * @returns {Promise<Record<string,string>|null>} the raw router response, or null when the read failed
      */
     async _safeRead() {
+        if (!this.client) {
+            return null;
+        }
         try {
             return await this.client.getSignal(ALL_CMDS);
         } catch (e) {
@@ -245,7 +262,8 @@ class ZteMc888 extends utils.Adapter {
 
     /**
      * Apply values and update the connection indicator.
-     * @param {Record<string,string>|null} raw
+     *
+     * @param {Record<string,string>} raw the raw router response
      * @param {boolean} partial  when true, empty fields are left untouched
      *                           (keep last value) instead of being cleared
      */
@@ -258,6 +276,12 @@ class ZteMc888 extends utils.Adapter {
         await this.setStateChangedAsync('info.connection', { val: true, ack: true });
     }
 
+    /**
+     * Write all scalar fields from the raw response into their states.
+     *
+     * @param {Record<string,string>} raw the raw router response
+     * @param {boolean} [partial] when true, empty fields keep their last value instead of being cleared
+     */
     async applyValues(raw, partial = false) {
         for (const f of FIELDS) {
             const rawVal = raw[f.cmd];
@@ -300,6 +324,9 @@ class ZteMc888 extends utils.Adapter {
      *     index,pci,?,band,arfcn,bandwidth
      * lte_multi_ca_scell_sig_info format (per cell, ';' separated):
      *     rsrp,rsrq,sinr,rssi,?,active
+     *
+     * @param {Record<string,string>} raw the raw router response
+     * @param {boolean} [partial] when true, empty CA fields keep their last value instead of being cleared
      */
     async applySecondaryCells(raw, partial = false) {
         const infoRaw = raw[CA_FIELDS.scellInfo] || '';
@@ -311,8 +338,14 @@ class ZteMc888 extends utils.Adapter {
             return;
         }
 
-        const infoCells = infoRaw.split(';').map((c) => c.trim()).filter((c) => c.length);
-        const sigCells = sigRaw.split(';').map((c) => c.trim()).filter((c) => c.length);
+        const infoCells = infoRaw
+            .split(';')
+            .map(c => c.trim())
+            .filter(c => c.length);
+        const sigCells = sigRaw
+            .split(';')
+            .map(c => c.trim())
+            .filter(c => c.length);
 
         for (let i = 0; i < MAX_SCELLS; i++) {
             const base = `lte.scc${i}`;
@@ -325,9 +358,7 @@ class ZteMc888 extends utils.Adapter {
                 continue;
             }
 
-            const active = sig && sig[5] !== undefined
-                ? sig[5].trim() === '1'
-                : Boolean(info);
+            const active = sig && sig[5] !== undefined ? sig[5].trim() === '1' : Boolean(info);
             await this.setStateChangedAsync(`${base}.active`, { val: active, ack: true });
 
             if (info) {
@@ -356,15 +387,15 @@ class ZteMc888 extends utils.Adapter {
      * numeric signal fields (RSRP/RSRQ/... ) since those are only populated on
      * a real, authorized read.
      *
-     * @param {Record<string,string>|null} raw
-     * @returns {boolean}
+     * @param {Record<string,string>|null} raw the raw router response
+     * @returns {boolean} true if at least one numeric signal field carries a value
      */
     _hasSignalData(raw) {
         if (!raw) {
             return false;
         }
-        const probes = FIELDS.filter((f) => f.type === 'number').map((f) => f.cmd);
-        return probes.some((cmd) => raw[cmd] !== undefined && String(raw[cmd]).trim() !== '');
+        const probes = FIELDS.filter(f => f.type === 'number').map(f => f.cmd);
+        return probes.some(cmd => raw[cmd] !== undefined && String(raw[cmd]).trim() !== '');
     }
 
     /**
@@ -375,18 +406,22 @@ class ZteMc888 extends utils.Adapter {
      * bands, PCI, carrier aggregation, ...) requires an authenticated session.
      * If any of those login-only fields carries a value, we hold a session.
      *
-     * @param {Record<string,string>|null} raw
-     * @returns {boolean}
+     * @param {Record<string,string>|null} raw the raw router response
+     * @returns {boolean} true if a login-only field carries a value, i.e. we hold a session
      */
     _hasFullData(raw) {
         if (!raw) {
             return false;
         }
-        return LOGIN_ONLY_PROBE.some(
-            (cmd) => raw[cmd] !== undefined && String(raw[cmd]).trim() !== '',
-        );
+        return LOGIN_ONLY_PROBE.some(cmd => raw[cmd] !== undefined && String(raw[cmd]).trim() !== '');
     }
 
+    /**
+     * Convert a raw router value into a number.
+     *
+     * @param {string|null|undefined} v raw value
+     * @returns {number|null} the number, or null for empty/non-numeric input
+     */
     _num(v) {
         if (v === undefined || v === null || String(v).trim() === '') {
             return null;
@@ -395,6 +430,12 @@ class ZteMc888 extends utils.Adapter {
         return Number.isFinite(n) ? n : null;
     }
 
+    /**
+     * Convert a hex string from the router into a decimal number.
+     *
+     * @param {string|null|undefined} v raw hex value, e.g. a cell id
+     * @returns {number|null} the decimal value, or null for empty/non-hex input
+     */
     _hexToDec(v) {
         if (v === undefined || v === null || String(v).trim() === '') {
             return null;
@@ -403,6 +444,11 @@ class ZteMc888 extends utils.Adapter {
         return Number.isFinite(n) ? n : null;
     }
 
+    /**
+     * Stop polling when the instance is unloaded.
+     *
+     * @param {() => void} callback must be called when the cleanup is done
+     */
     onUnload(callback) {
         try {
             this.unloaded = true;
@@ -411,14 +457,14 @@ class ZteMc888 extends utils.Adapter {
                 this.pollTimer = null;
             }
             callback();
-        } catch (e) {
+        } catch {
             callback();
         }
     }
 }
 
 if (require.main !== module) {
-    module.exports = (options) => new ZteMc888(options);
+    module.exports = options => new ZteMc888(options);
 } else {
     new ZteMc888();
 }

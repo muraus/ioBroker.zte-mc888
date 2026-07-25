@@ -1,0 +1,14 @@
+{
+    "Router IP": "Router IP",
+    "e.g. 192.168.0.1 (varies by firmware, e.g. 192.168.254.1)": "e.g. 192.168.0.1 (varies by firmware, e.g. 192.168.254.1)",
+    "Poll interval (seconds)": "Poll interval (seconds)",
+    "Minimum 5 seconds": "Minimum 5 seconds",
+    "Login required": "Login required",
+    "Enable if the router API only responds after authentication": "Enable if the router API only responds after authentication",
+    "Username": "Username",
+    "Password": "Password",
+    "Web UI has priority": "Web UI has priority",
+    "When the router web interface logs in with the same user, pause polling instead of logging back in and kicking it out": "When the router web interface logs in with the same user, pause polling instead of logging back in and kicking it out",
+    "Back-off after web UI login (minutes)": "Back-off after web UI login (minutes)",
+    "How long to keep the last values and stay logged out after the web UI took over the session": "How long to keep the last values and stay logged out after the web UI took over the session"
+}

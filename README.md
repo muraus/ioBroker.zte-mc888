@@ -78,6 +78,14 @@ directory (needs internet on first run).
 	Placeholder for the next version (at the beginning of the line):
 	### **WORK IN PROGRESS**
 -->
+### **WORK IN PROGRESS**
+* (Stefan) Added ESLint (@iobroker/eslint-config) and prettier config plus a `lint` script
+* (Stefan) Added a tsconfig.json and a `check` script to type check the JavaScript sources via JSDoc
+* (Stefan) Fixed a crash in the poll loop when the router did not answer and no login is configured
+* (Stefan) Admin config is now translated into all 11 ioBroker languages (jsonConfig i18n)
+* (Stefan) Added dependabot configuration and VS Code JSON schema settings
+* (Stefan) Lint and type checking are now enforced in CI
+
 ### 0.0.2 (2026-07-25)
 * (Stefan) Normalized the repository URL in package.json
 * (Stefan) Release is published via npm trusted publishing and signed with provenance

@@ -1,0 +1,14 @@
+{
+    "Router IP": "Router-IP",
+    "e.g. 192.168.0.1 (varies by firmware, e.g. 192.168.254.1)": "bijv. 192.168.0.1 (verschilt per firmware, bijv. 192.168.254.1)",
+    "Poll interval (seconds)": "Pollinterval (seconden)",
+    "Minimum 5 seconds": "Minimaal 5 seconden",
+    "Login required": "Aanmelden vereist",
+    "Enable if the router API only responds after authentication": "Schakel in als de router-API alleen na authenticatie antwoordt",
+    "Username": "Gebruikersnaam",
+    "Password": "Wachtwoord",
+    "Web UI has priority": "Webinterface heeft prioriteit",
+    "When the router web interface logs in with the same user, pause polling instead of logging back in and kicking it out": "Wanneer de webinterface van de router zich met dezelfde gebruiker aanmeldt, wordt het pollen gepauzeerd in plaats van opnieuw aan te melden en de webinterface eruit te gooien",
+    "Back-off after web UI login (minutes)": "Wachttijd na aanmelding van de webinterface (minuten)",
+    "How long to keep the last values and stay logged out after the web UI took over the session": "Hoe lang de laatste waarden bewaard blijven en afgemeld blijven nadat de webinterface de sessie heeft overgenomen"
+}

@@ -1,0 +1,14 @@
+{
+    "Router IP": "IP-адреса роутера",
+    "e.g. 192.168.0.1 (varies by firmware, e.g. 192.168.254.1)": "напр. 192.168.0.1 (залежить від прошивки, напр. 192.168.254.1)",
+    "Poll interval (seconds)": "Інтервал опитування (секунди)",
+    "Minimum 5 seconds": "Мінімум 5 секунд",
+    "Login required": "Потрібен вхід",
+    "Enable if the router API only responds after authentication": "Увімкніть, якщо API роутера відповідає лише після аутентифікації",
+    "Username": "Ім'я користувача",
+    "Password": "Пароль",
+    "Web UI has priority": "Веб-інтерфейс має пріоритет",
+    "When the router web interface logs in with the same user, pause polling instead of logging back in and kicking it out": "Коли веб-інтерфейс роутера входить під тим самим користувачем, опитування призупиняється замість повторного входу, який завершив би сеанс веб-інтерфейсу",
+    "Back-off after web UI login (minutes)": "Пауза після входу веб-інтерфейсу (хвилини)",
+    "How long to keep the last values and stay logged out after the web UI took over the session": "Як довго зберігати останні значення та залишатися без сеансу після того, як веб-інтерфейс перебрав сеанс"
+}

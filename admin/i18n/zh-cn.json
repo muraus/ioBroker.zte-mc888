@@ -1,0 +1,14 @@
+{
+    "Router IP": "路由器 IP",
+    "e.g. 192.168.0.1 (varies by firmware, e.g. 192.168.254.1)": "例如 192.168.0.1（因固件而异，例如 192.168.254.1）",
+    "Poll interval (seconds)": "轮询间隔（秒）",
+    "Minimum 5 seconds": "最少 5 秒",
+    "Login required": "需要登录",
+    "Enable if the router API only responds after authentication": "如果路由器 API 仅在认证后才响应，请启用此项",
+    "Username": "用户名",
+    "Password": "密码",
+    "Web UI has priority": "网页界面优先",
+    "When the router web interface logs in with the same user, pause polling instead of logging back in and kicking it out": "当路由器网页界面以相同用户登录时，暂停轮询，而不是重新登录并将其踢出",
+    "Back-off after web UI login (minutes)": "网页界面登录后的等待时间（分钟）",
+    "How long to keep the last values and stay logged out after the web UI took over the session": "在网页界面接管会话后，保留最后数值并保持退出登录的时长"
+}

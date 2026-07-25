@@ -1,0 +1,14 @@
+{
+    "Router IP": "IP-адрес роутера",
+    "e.g. 192.168.0.1 (varies by firmware, e.g. 192.168.254.1)": "например, 192.168.0.1 (зависит от прошивки, например 192.168.254.1)",
+    "Poll interval (seconds)": "Интервал опроса (секунды)",
+    "Minimum 5 seconds": "Минимум 5 секунд",
+    "Login required": "Требуется вход",
+    "Enable if the router API only responds after authentication": "Включите, если API роутера отвечает только после аутентификации",
+    "Username": "Имя пользователя",
+    "Password": "Пароль",
+    "Web UI has priority": "Веб-интерфейс имеет приоритет",
+    "When the router web interface logs in with the same user, pause polling instead of logging back in and kicking it out": "Если веб-интерфейс роутера входит под тем же пользователем, опрос приостанавливается вместо повторного входа, который завершил бы сеанс веб-интерфейса",
+    "Back-off after web UI login (minutes)": "Пауза после входа веб-интерфейса (минуты)",
+    "How long to keep the last values and stay logged out after the web UI took over the session": "Как долго сохранять последние значения и оставаться разлогиненным после того, как веб-интерфейс занял сеанс"
+}

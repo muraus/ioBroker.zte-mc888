@@ -45,7 +45,13 @@
     "@alcalzone/release-script": "^5.2.1",
     "@alcalzone/release-script-plugin-iobroker": "^5.2.0",
     "@alcalzone/release-script-plugin-license": "^5.2.0",
-    "@iobroker/testing": "^5.3.0"
+    "@iobroker/adapter-dev": "^1.5.0",
+    "@iobroker/eslint-config": "^2.3.4",
+    "@iobroker/testing": "^5.3.0",
+    "@tsconfig/node22": "^22.0.5",
+    "@types/mocha": "^10.0.10",
+    "@types/node": "^22.20.1",
+    "typescript": "^6.0.3"
   },
   "overrides": {
     "glob": "^13.0.0"
@@ -55,6 +61,10 @@
     "test:package": "mocha test/package --exit",
     "test:integration": "mocha test/integration --exit",
     "test": "npm run test:js && npm run test:package",
+    "check": "tsc --noEmit -p tsconfig.json",
+    "lint": "eslint -c eslint.config.mjs .",
+    "lint:fix": "eslint -c eslint.config.mjs . --fix",
+    "translate": "translate-adapter",
     "release": "release-script"
   },
   "readmeFilename": "README.md"
