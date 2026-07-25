@@ -78,7 +78,7 @@ directory (needs internet on first run).
 	Placeholder for the next version (at the beginning of the line):
 	### **WORK IN PROGRESS**
 -->
-### **WORK IN PROGRESS**
+### 0.0.3 (2026-07-25)
 * (Stefan) Added ESLint (@iobroker/eslint-config) and prettier config plus a `lint` script
 * (Stefan) Added a tsconfig.json and a `check` script to type check the JavaScript sources via JSDoc
 * (Stefan) Fixed a crash in the poll loop when the router did not answer and no login is configured

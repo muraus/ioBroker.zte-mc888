@@ -1,9 +1,9 @@
 {
   "common": {
     "name": "zte-mc888",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "news": {
-      "NEXT": {
+      "0.0.3": {
         "en": "Fixed a crash when the router did not answer while no login is configured\nThe admin configuration is now translated into all ioBroker languages\nAdded lint and type checking to the development setup and CI",
         "de": "Absturz behoben, wenn der Router nicht antwortet und kein Login konfiguriert ist\nDie Adapter-Konfiguration ist jetzt in allen ioBroker-Sprachen verfügbar\nLint und Typprüfung in Entwicklungsumgebung und CI ergänzt",
         "ru": "Исправлен сбой, когда роутер не отвечает и вход не настроен\nНастройки адаптера теперь доступны на всех языках ioBroker\nДобавлены линтинг и проверка типов в среде разработки и CI",
