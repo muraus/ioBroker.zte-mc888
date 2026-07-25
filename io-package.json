@@ -3,6 +3,19 @@
     "name": "zte-mc888",
     "version": "0.0.2",
     "news": {
+      "NEXT": {
+        "en": "Fixed a crash when the router did not answer while no login is configured\nThe admin configuration is now translated into all ioBroker languages\nAdded lint and type checking to the development setup and CI",
+        "de": "Absturz behoben, wenn der Router nicht antwortet und kein Login konfiguriert ist\nDie Adapter-Konfiguration ist jetzt in allen ioBroker-Sprachen verfügbar\nLint und Typprüfung in Entwicklungsumgebung und CI ergänzt",
+        "ru": "Исправлен сбой, когда роутер не отвечает и вход не настроен\nНастройки адаптера теперь доступны на всех языках ioBroker\nДобавлены линтинг и проверка типов в среде разработки и CI",
+        "pt": "Corrigida uma falha quando o router não responde e não está configurado login\nA configuração do adaptador está agora disponível em todos os idiomas do ioBroker\nAdicionados lint e verificação de tipos ao ambiente de desenvolvimento e à CI",
+        "nl": "Crash verholpen wanneer de router niet antwoordt en er geen aanmelding is geconfigureerd\nDe adapterconfiguratie is nu in alle ioBroker-talen beschikbaar\nLint en typecontrole toegevoegd aan de ontwikkelomgeving en CI",
+        "fr": "Correction d'un plantage lorsque le routeur ne répond pas et qu'aucune connexion n'est configurée\nLa configuration de l'adaptateur est désormais disponible dans toutes les langues d'ioBroker\nAjout du lint et de la vérification des types dans l'environnement de développement et la CI",
+        "it": "Corretto un crash quando il router non risponde e non è configurato alcun login\nLa configurazione dell'adattatore è ora disponibile in tutte le lingue di ioBroker\nAggiunti lint e controllo dei tipi all'ambiente di sviluppo e alla CI",
+        "es": "Corregido un fallo cuando el router no responde y no hay inicio de sesión configurado\nLa configuración del adaptador ya está disponible en todos los idiomas de ioBroker\nAñadidos lint y comprobación de tipos al entorno de desarrollo y a la CI",
+        "pl": "Naprawiono awarię, gdy router nie odpowiada, a logowanie nie jest skonfigurowane\nKonfiguracja adaptera jest teraz dostępna we wszystkich językach ioBroker\nDodano lint i sprawdzanie typów w środowisku programistycznym i CI",
+        "uk": "Виправлено збій, коли роутер не відповідає, а вхід не налаштований\nНалаштування адаптера тепер доступні всіма мовами ioBroker\nДодано лінтинг і перевірку типів у середовищі розробки та CI",
+        "zh-cn": "修复了未配置登录且路由器无响应时的崩溃问题\n适配器配置现已支持所有 ioBroker 语言\n为开发环境和 CI 添加了代码检查和类型检查"
+      },
       "0.0.2": {
         "en": "Normalized the repository URL in package.json\nRelease is published via npm trusted publishing and signed with provenance",
         "de": "Normalisierte Repository-URL in package.json\nRelease wird über npm trusted publishing veröffentlicht und mit Provenienz signiert",
