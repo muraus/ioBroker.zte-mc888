@@ -8,7 +8,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/muraus/ioBroker.zte-mc888"
+    "url": "git+https://github.com/muraus/ioBroker.zte-mc888.git"
   },
   "bugs": {
     "url": "https://github.com/muraus/ioBroker.zte-mc888/issues"
