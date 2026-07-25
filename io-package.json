@@ -5,17 +5,43 @@
     "news": {
       "0.0.1": {
         "en": "Initial release",
-        "de": "Erste Version"
+        "de": "Erste Version",
+        "ru": "Первый релиз",
+        "pt": "Versão inicial",
+        "nl": "Eerste release",
+        "fr": "Version initiale",
+        "it": "Versione iniziale",
+        "es": "Versión inicial",
+        "pl": "Pierwsze wydanie",
+        "uk": "Перший випуск",
+        "zh-cn": "初始版本"
       }
     },
-    "title": "ZTE MC888 Signal",
     "titleLang": {
       "en": "ZTE MC888 Signal",
-      "de": "ZTE MC888 Signal"
+      "de": "ZTE MC888 Signal",
+      "ru": "ZTE MC888 Signal",
+      "pt": "ZTE MC888 Signal",
+      "nl": "ZTE MC888 Signal",
+      "fr": "ZTE MC888 Signal",
+      "it": "ZTE MC888 Signal",
+      "es": "ZTE MC888 Signal",
+      "pl": "ZTE MC888 Signal",
+      "uk": "ZTE MC888 Signal",
+      "zh-cn": "ZTE MC888 Signal"
     },
     "desc": {
       "en": "Reads LTE and 5G signal values from a ZTE MC888 router",
-      "de": "Liest LTE- und 5G-Signalwerte von einem ZTE MC888 Router aus"
+      "de": "Liest LTE- und 5G-Signalwerte von einem ZTE MC888 Router aus",
+      "ru": "Считывает значения сигнала LTE и 5G с роутера ZTE MC888",
+      "pt": "Lê os valores de sinal LTE e 5G de um router ZTE MC888",
+      "nl": "Leest LTE- en 5G-signaalwaarden van een ZTE MC888-router uit",
+      "fr": "Lit les valeurs de signal LTE et 5G d'un routeur ZTE MC888",
+      "it": "Legge i valori di segnale LTE e 5G da un router ZTE MC888",
+      "es": "Lee los valores de señal LTE y 5G de un router ZTE MC888",
+      "pl": "Odczytuje wartości sygnału LTE i 5G z routera ZTE MC888",
+      "uk": "Зчитує значення сигналу LTE та 5G з роутера ZTE MC888",
+      "zh-cn": "从 ZTE MC888 路由器读取 LTE 和 5G 信号值"
     },
     "authors": [
       "Stefan"
@@ -27,9 +53,11 @@
       "5G",
       "signal"
     ],
-    "license": "MIT",
+    "licenseInformation": {
+      "type": "free",
+      "license": "MIT"
+    },
     "platform": "Javascript/Node.js",
-    "main": "main.js",
     "icon": "zte-mc888.png",
     "enabled": true,
     "extIcon": "https://raw.githubusercontent.com/muraus/ioBroker.zte-mc888/main/admin/zte-mc888.png",
@@ -46,15 +74,21 @@
     "tier": 3,
     "dependencies": [
       {
-        "js-controller": ">=5.0.0"
+        "js-controller": ">=6.0.11"
       }
     ],
     "globalDependencies": [
       {
-        "admin": ">=6.0.0"
+        "admin": ">=7.6.17"
       }
     ],
-    "messagebox": false
+    "messagebox": false,
+    "protectedNative": [
+      "password"
+    ],
+    "encryptedNative": [
+      "password"
+    ]
   },
   "native": {
     "ip": "192.168.0.1",

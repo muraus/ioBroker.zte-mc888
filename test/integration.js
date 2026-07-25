@@ -1,6 +1,6 @@
 'use strict';
 
-const path = require('path');
+const path = require('node:path');
 const { tests } = require('@iobroker/testing');
 
 // Run the standard integration tests: a real js-controller is set up in a

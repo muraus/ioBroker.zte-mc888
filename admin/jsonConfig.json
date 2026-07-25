@@ -7,8 +7,11 @@
       "label": "Router IP",
       "help": "e.g. 192.168.0.1 (varies by firmware, e.g. 192.168.254.1)",
       "default": "192.168.0.1",
+      "xs": 12,
       "sm": 12,
-      "md": 6
+      "md": 6,
+      "lg": 6,
+      "xl": 6
     },
     "pollInterval": {
       "type": "number",
@@ -16,31 +19,43 @@
       "help": "Minimum 5 seconds",
       "min": 5,
       "default": 30,
+      "xs": 12,
       "sm": 12,
-      "md": 6
+      "md": 6,
+      "lg": 6,
+      "xl": 6
     },
     "useLogin": {
       "type": "checkbox",
       "label": "Login required",
       "help": "Enable if the router API only responds after authentication",
       "default": false,
+      "xs": 12,
       "sm": 12,
-      "md": 12
+      "md": 12,
+      "lg": 12,
+      "xl": 12
     },
     "user": {
       "type": "text",
       "label": "Username",
       "default": "admin",
       "hidden": "!data.useLogin",
+      "xs": 12,
       "sm": 12,
-      "md": 6
+      "md": 6,
+      "lg": 6,
+      "xl": 6
     },
     "password": {
       "type": "password",
       "label": "Password",
       "hidden": "!data.useLogin",
+      "xs": 12,
       "sm": 12,
-      "md": 6
+      "md": 6,
+      "lg": 6,
+      "xl": 6
     },
     "webUiPriority": {
       "type": "checkbox",
@@ -48,8 +63,11 @@
       "help": "When the router web interface logs in with the same user, pause polling instead of logging back in and kicking it out",
       "default": true,
       "hidden": "!data.useLogin",
+      "xs": 12,
       "sm": 12,
-      "md": 6
+      "md": 6,
+      "lg": 6,
+      "xl": 6
     },
     "graceMinutes": {
       "type": "number",
@@ -58,8 +76,11 @@
       "min": 0,
       "default": 5,
       "hidden": "!data.useLogin || !data.webUiPriority",
+      "xs": 12,
       "sm": 12,
-      "md": 6
+      "md": 6,
+      "lg": 6,
+      "xl": 6
     }
   }
 }
