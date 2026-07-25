@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "zte-mc888",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "news": {
+      "0.0.2": {
+        "en": "Normalized the repository URL in package.json\nRelease is published via npm trusted publishing and signed with provenance",
+        "de": "Normalisierte Repository-URL in package.json\nRelease wird über npm trusted publishing veröffentlicht und mit Provenienz signiert",
+        "ru": "Нормализован URL-адрес репозитория в package.json\nВыпуск публикуется через доверенное издание npm и подписывается с провенансом",
+        "pt": "Normalizou o URL do repositório em package.json\nO lançamento é publicado através da publicação confiável do npm e assinado com proveniência",
+        "nl": "De repository-URL in package.json normaliseren\nRelease wordt gepubliceerd via npm vertrouwde publicatie en ondertekend met herkomst",
+        "fr": "Normalisé l'URL du dépôt dans package.json\nLa publication est publiée via npm et signée avec provenance",
+        "it": "Normalizzato l'URL del repository in package.json\nIl rilascio è pubblicato tramite npm editoria di fiducia e firmato con la provenienza",
+        "es": "Normalizar la URL del repositorio en package.json\nLa publicación se publica a través de la publicación de confianza npm y se firma con procedencia",
+        "pl": "Znormalizowane repozytorium URL w package.json\nRelease jest publikowany poprzez Npm zaufanych publikacji i podpisane z pochodzenia",
+        "uk": "Нормалізація URL-адреси репозиторій в пакеті.json\nВидання опубліковано через npm перевірене видання та підписано з довіреністю",
+        "zh-cn": "在 package.json 中将寄存器 URL 正常化\n通过 npm 信任的出版发布,并用来源签名"
+      },
       "0.0.1": {
         "en": "Initial release",
         "de": "Erste Version",

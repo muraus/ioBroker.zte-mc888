@@ -78,7 +78,7 @@ directory (needs internet on first run).
 	Placeholder for the next version (at the beginning of the line):
 	### **WORK IN PROGRESS**
 -->
-### **WORK IN PROGRESS**
+### 0.0.2 (2026-07-25)
 * (Stefan) Normalized the repository URL in package.json
 * (Stefan) Release is published via npm trusted publishing and signed with provenance
 
