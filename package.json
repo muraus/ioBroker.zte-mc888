@@ -1,0 +1,62 @@
+{
+  "name": "iobroker.zte-mc888",
+  "version": "0.0.1",
+  "description": "ioBroker adapter to read LTE/5G signal values from a ZTE MC888 router",
+  "author": {
+    "name": "Stefan"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/muraus/ioBroker.zte-mc888"
+  },
+  "bugs": {
+    "url": "https://github.com/muraus/ioBroker.zte-mc888/issues"
+  },
+  "homepage": "https://github.com/muraus/ioBroker.zte-mc888",
+  "keywords": [
+    "ioBroker",
+    "ZTE",
+    "MC888",
+    "LTE",
+    "5G",
+    "modem",
+    "router",
+    "signal"
+  ],
+  "main": "main.js",
+  "files": [
+    "admin/",
+    "lib/",
+    "io-package.json",
+    "main.js",
+    "zte-mc888.png",
+    "LICENSE",
+    "README.md",
+    "!lib/**/*.test.js"
+  ],
+  "engines": {
+    "node": ">=16"
+  },
+  "dependencies": {
+    "@iobroker/adapter-core": "^3.0.4"
+  },
+  "devDependencies": {
+    "@iobroker/testing": "^5.3.0",
+    "chai": "^4.3.10",
+    "chai-as-promised": "^7.1.1",
+    "mocha": "^11.7.6",
+    "sinon": "^22.1.0",
+    "sinon-chai": "^3.7.0"
+  },
+  "overrides": {
+    "glob": "^13.0.0"
+  },
+  "scripts": {
+    "test:js": "mocha --config test/mocharc.custom.json \"lib/**/*.test.js\" \"test/**/*.test.js\"",
+    "test:package": "mocha test/package --exit",
+    "test:integration": "mocha test/integration --exit",
+    "test": "npm run test:js && npm run test:package"
+  },
+  "readmeFilename": "README.md"
+}

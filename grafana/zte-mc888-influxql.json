@@ -1,0 +1,721 @@
+{
+  "__inputs": [
+    {
+      "name": "DS_INFLUXDB",
+      "label": "InfluxDB",
+      "description": "ioBroker InfluxDB (1.x / InfluxQL) datasource",
+      "type": "datasource",
+      "pluginId": "influxdb",
+      "pluginName": "InfluxDB"
+    }
+  ],
+  "__requires": [
+    { "type": "grafana", "id": "grafana", "name": "Grafana", "version": "9.0.0" },
+    { "type": "datasource", "id": "influxdb", "name": "InfluxDB", "version": "1.0.0" },
+    { "type": "panel", "id": "stat", "name": "Stat", "version": "" },
+    { "type": "panel", "id": "gauge", "name": "Gauge", "version": "" },
+    { "type": "panel", "id": "timeseries", "name": "Time series", "version": "" }
+  ],
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": { "type": "grafana", "uid": "-- Grafana --" },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 1,
+  "id": null,
+  "links": [],
+  "liveNow": false,
+  "refresh": "30s",
+  "schemaVersion": 39,
+  "tags": ["zte", "mc888", "lte", "5g", "iobroker"],
+  "templating": {
+    "list": [
+      {
+        "type": "textbox",
+        "name": "instance",
+        "label": "ioBroker Instanz-Präfix",
+        "description": "Präfix der measurements, z. B. zte-mc888.0",
+        "query": "zte-mc888.0",
+        "current": { "selected": true, "text": "zte-mc888.0", "value": "zte-mc888.0" },
+        "options": [{ "text": "zte-mc888.0", "value": "zte-mc888.0", "selected": true }],
+        "hide": 0,
+        "skipUrlSync": false
+      }
+    ]
+  },
+  "time": { "from": "now-6h", "to": "now" },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "ZTE MC888 – LTE / 5G Signal",
+  "uid": "zte-mc888-signal",
+  "version": 1,
+  "weekStart": "",
+  "panels": [
+    {
+      "id": 100,
+      "type": "row",
+      "title": "📶 Status & Überblick",
+      "collapsed": false,
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 0 },
+      "panels": []
+    },
+    {
+      "id": 1,
+      "type": "stat",
+      "title": "Verbindung",
+      "datasource": { "type": "influxdb", "uid": "${DS_INFLUXDB}" },
+      "gridPos": { "h": 4, "w": 4, "x": 0, "y": 1 },
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [
+            { "type": "value", "options": {
+              "true": { "text": "Online", "color": "green", "index": 0 },
+              "false": { "text": "Offline", "color": "red", "index": 1 },
+              "1": { "text": "Online", "color": "green", "index": 2 },
+              "0": { "text": "Offline", "color": "red", "index": 3 }
+            }}
+          ],
+          "color": { "mode": "fixed", "fixedColor": "text" },
+          "noValue": "–"
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "last", "values": false },
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "textMode": "value",
+        "orientation": "auto"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": { "type": "influxdb", "uid": "${DS_INFLUXDB}" },
+          "query": "SELECT last(\"value\") FROM \"$instance.info.connection\" WHERE $timeFilter",
+          "rawQuery": true,
+          "resultFormat": "table"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "type": "stat",
+      "title": "Netztyp",
+      "datasource": { "type": "influxdb", "uid": "${DS_INFLUXDB}" },
+      "gridPos": { "h": 4, "w": 4, "x": 4, "y": 1 },
+      "fieldConfig": {
+        "defaults": { "color": { "mode": "fixed", "fixedColor": "purple" }, "noValue": "–" },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "last", "values": false },
+        "colorMode": "background", "graphMode": "none", "justifyMode": "center", "textMode": "value"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": { "type": "influxdb", "uid": "${DS_INFLUXDB}" },
+          "query": "SELECT last(\"value\") FROM \"$instance.general.networkType\" WHERE $timeFilter",
+          "rawQuery": true,
+          "resultFormat": "table"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "type": "stat",
+      "title": "LTE Band",
+      "datasource": { "type": "influxdb", "uid": "${DS_INFLUXDB}" },
+      "gridPos": { "h": 4, "w": 4, "x": 8, "y": 1 },
+      "fieldConfig": {
+        "defaults": { "color": { "mode": "fixed", "fixedColor": "blue" }, "noValue": "–" },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "last", "values": false },
+        "colorMode": "background", "graphMode": "none", "justifyMode": "center", "textMode": "value"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": { "type": "influxdb", "uid": "${DS_INFLUXDB}" },
+          "query": "SELECT last(\"value\") FROM \"$instance.lte.bandName\" WHERE $timeFilter",
+          "rawQuery": true,
+          "resultFormat": "table"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "type": "stat",
+      "title": "5G Band",
+      "datasource": { "type": "influxdb", "uid": "${DS_INFLUXDB}" },
+      "gridPos": { "h": 4, "w": 4, "x": 12, "y": 1 },
+      "fieldConfig": {
+        "defaults": { "color": { "mode": "fixed", "fixedColor": "green" }, "noValue": "–" },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "last", "values": false },
+        "colorMode": "background", "graphMode": "none", "justifyMode": "center", "textMode": "value"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": { "type": "influxdb", "uid": "${DS_INFLUXDB}" },
+          "query": "SELECT last(\"value\") FROM \"$instance.nr5g.bandName\" WHERE $timeFilter",
+          "rawQuery": true,
+          "resultFormat": "table"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "type": "stat",
+      "title": "Carrier Aggregation",
+      "datasource": { "type": "influxdb", "uid": "${DS_INFLUXDB}" },
+      "gridPos": { "h": 4, "w": 4, "x": 16, "y": 1 },
+      "fieldConfig": {
+        "defaults": { "color": { "mode": "fixed", "fixedColor": "orange" }, "noValue": "–" },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "last", "values": false },
+        "colorMode": "background", "graphMode": "none", "justifyMode": "center", "textMode": "value"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": { "type": "influxdb", "uid": "${DS_INFLUXDB}" },
+          "query": "SELECT last(\"value\") FROM \"$instance.lte.carrierAggregation\" WHERE $timeFilter",
+          "rawQuery": true,
+          "resultFormat": "table"
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "type": "stat",
+      "title": "Cell ID",
+      "datasource": { "type": "influxdb", "uid": "${DS_INFLUXDB}" },
+      "gridPos": { "h": 4, "w": 4, "x": 20, "y": 1 },
+      "fieldConfig": {
+        "defaults": { "color": { "mode": "fixed", "fixedColor": "text" }, "unit": "none", "decimals": 0, "noValue": "–" },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+        "colorMode": "none", "graphMode": "none", "justifyMode": "center", "textMode": "value"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": { "type": "influxdb", "uid": "${DS_INFLUXDB}" },
+          "query": "SELECT last(\"value\") FROM \"$instance.general.cellIdDec\" WHERE $timeFilter",
+          "rawQuery": true,
+          "resultFormat": "time_series"
+        }
+      ]
+    },
+
+    {
+      "id": 101,
+      "type": "row",
+      "title": "5G NR",
+      "collapsed": false,
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 5 },
+      "panels": []
+    },
+    {
+      "id": 10,
+      "type": "gauge",
+      "title": "5G RSRP",
+      "datasource": { "type": "influxdb", "uid": "${DS_INFLUXDB}" },
+      "gridPos": { "h": 6, "w": 6, "x": 0, "y": 6 },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "dBm", "min": -125, "max": -50, "decimals": 0, "noValue": "–",
+          "thresholds": { "mode": "absolute", "steps": [
+            { "color": "red", "value": null },
+            { "color": "orange", "value": -110 },
+            { "color": "yellow", "value": -95 },
+            { "color": "green", "value": -80 }
+          ]},
+          "color": { "mode": "thresholds" }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+        "showThresholdLabels": false, "showThresholdMarkers": true, "orientation": "auto"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": { "type": "influxdb", "uid": "${DS_INFLUXDB}" },
+          "query": "SELECT last(\"value\") FROM \"$instance.nr5g.rsrp\" WHERE $timeFilter",
+          "rawQuery": true, "resultFormat": "time_series"
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "type": "gauge",
+      "title": "5G RSRQ",
+      "datasource": { "type": "influxdb", "uid": "${DS_INFLUXDB}" },
+      "gridPos": { "h": 6, "w": 6, "x": 6, "y": 6 },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "dB", "min": -22, "max": -3, "decimals": 0, "noValue": "–",
+          "thresholds": { "mode": "absolute", "steps": [
+            { "color": "red", "value": null },
+            { "color": "orange", "value": -18 },
+            { "color": "yellow", "value": -14 },
+            { "color": "green", "value": -10 }
+          ]},
+          "color": { "mode": "thresholds" }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+        "showThresholdLabels": false, "showThresholdMarkers": true
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": { "type": "influxdb", "uid": "${DS_INFLUXDB}" },
+          "query": "SELECT last(\"value\") FROM \"$instance.nr5g.rsrq\" WHERE $timeFilter",
+          "rawQuery": true, "resultFormat": "time_series"
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "type": "gauge",
+      "title": "5G SINR",
+      "datasource": { "type": "influxdb", "uid": "${DS_INFLUXDB}" },
+      "gridPos": { "h": 6, "w": 6, "x": 12, "y": 6 },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "dB", "min": -10, "max": 40, "decimals": 0, "noValue": "–",
+          "thresholds": { "mode": "absolute", "steps": [
+            { "color": "red", "value": null },
+            { "color": "orange", "value": 0 },
+            { "color": "yellow", "value": 10 },
+            { "color": "green", "value": 20 }
+          ]},
+          "color": { "mode": "thresholds" }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+        "showThresholdLabels": false, "showThresholdMarkers": true
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": { "type": "influxdb", "uid": "${DS_INFLUXDB}" },
+          "query": "SELECT last(\"value\") FROM \"$instance.nr5g.sinr\" WHERE $timeFilter",
+          "rawQuery": true, "resultFormat": "time_series"
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "type": "gauge",
+      "title": "5G RSSI",
+      "datasource": { "type": "influxdb", "uid": "${DS_INFLUXDB}" },
+      "gridPos": { "h": 6, "w": 6, "x": 18, "y": 6 },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "dBm", "min": -110, "max": -45, "decimals": 0, "noValue": "–",
+          "thresholds": { "mode": "absolute", "steps": [
+            { "color": "red", "value": null },
+            { "color": "orange", "value": -90 },
+            { "color": "yellow", "value": -75 },
+            { "color": "green", "value": -65 }
+          ]},
+          "color": { "mode": "thresholds" }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+        "showThresholdLabels": false, "showThresholdMarkers": true
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": { "type": "influxdb", "uid": "${DS_INFLUXDB}" },
+          "query": "SELECT last(\"value\") FROM \"$instance.nr5g.rssi\" WHERE $timeFilter",
+          "rawQuery": true, "resultFormat": "time_series"
+        }
+      ]
+    },
+    {
+      "id": 14,
+      "type": "timeseries",
+      "title": "5G Signalverlauf",
+      "datasource": { "type": "influxdb", "uid": "${DS_INFLUXDB}" },
+      "gridPos": { "h": 8, "w": 24, "x": 0, "y": 12 },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "drawStyle": "line", "lineInterpolation": "smooth", "lineWidth": 2,
+            "fillOpacity": 8, "showPoints": "never", "spanNulls": true, "axisPlacement": "auto"
+          },
+          "color": { "mode": "palette-classic" }, "noValue": "–"
+        },
+        "overrides": [
+          { "matcher": { "id": "byName", "options": "RSRP (dBm)" }, "properties": [{ "id": "custom.axisPlacement", "value": "left" }] },
+          { "matcher": { "id": "byName", "options": "RSSI (dBm)" }, "properties": [{ "id": "custom.axisPlacement", "value": "left" }] },
+          { "matcher": { "id": "byName", "options": "RSRQ (dB)" }, "properties": [{ "id": "custom.axisPlacement", "value": "right" }] },
+          { "matcher": { "id": "byName", "options": "SINR (dB)" }, "properties": [{ "id": "custom.axisPlacement", "value": "right" }] }
+        ]
+      },
+      "options": {
+        "legend": { "displayMode": "table", "placement": "bottom", "calcs": ["last", "min", "max", "mean"] },
+        "tooltip": { "mode": "multi", "sort": "none" }
+      },
+      "targets": [
+        { "refId": "A", "datasource": { "type": "influxdb", "uid": "${DS_INFLUXDB}" }, "alias": "RSRP (dBm)", "rawQuery": true, "resultFormat": "time_series", "query": "SELECT mean(\"value\") FROM \"$instance.nr5g.rsrp\" WHERE $timeFilter GROUP BY time($__interval) fill(previous)" },
+        { "refId": "B", "datasource": { "type": "influxdb", "uid": "${DS_INFLUXDB}" }, "alias": "RSRQ (dB)", "rawQuery": true, "resultFormat": "time_series", "query": "SELECT mean(\"value\") FROM \"$instance.nr5g.rsrq\" WHERE $timeFilter GROUP BY time($__interval) fill(previous)" },
+        { "refId": "C", "datasource": { "type": "influxdb", "uid": "${DS_INFLUXDB}" }, "alias": "SINR (dB)", "rawQuery": true, "resultFormat": "time_series", "query": "SELECT mean(\"value\") FROM \"$instance.nr5g.sinr\" WHERE $timeFilter GROUP BY time($__interval) fill(previous)" },
+        { "refId": "D", "datasource": { "type": "influxdb", "uid": "${DS_INFLUXDB}" }, "alias": "RSSI (dBm)", "rawQuery": true, "resultFormat": "time_series", "query": "SELECT mean(\"value\") FROM \"$instance.nr5g.rssi\" WHERE $timeFilter GROUP BY time($__interval) fill(previous)" }
+      ]
+    },
+
+    {
+      "id": 102,
+      "type": "row",
+      "title": "LTE",
+      "collapsed": false,
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 20 },
+      "panels": []
+    },
+    {
+      "id": 20,
+      "type": "gauge",
+      "title": "LTE RSRP",
+      "datasource": { "type": "influxdb", "uid": "${DS_INFLUXDB}" },
+      "gridPos": { "h": 6, "w": 6, "x": 0, "y": 21 },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "dBm", "min": -125, "max": -50, "decimals": 0, "noValue": "–",
+          "thresholds": { "mode": "absolute", "steps": [
+            { "color": "red", "value": null },
+            { "color": "orange", "value": -110 },
+            { "color": "yellow", "value": -95 },
+            { "color": "green", "value": -80 }
+          ]},
+          "color": { "mode": "thresholds" }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+        "showThresholdLabels": false, "showThresholdMarkers": true
+      },
+      "targets": [
+        { "refId": "A", "datasource": { "type": "influxdb", "uid": "${DS_INFLUXDB}" }, "rawQuery": true, "resultFormat": "time_series", "query": "SELECT last(\"value\") FROM \"$instance.lte.rsrp\" WHERE $timeFilter" }
+      ]
+    },
+    {
+      "id": 21,
+      "type": "gauge",
+      "title": "LTE RSRQ",
+      "datasource": { "type": "influxdb", "uid": "${DS_INFLUXDB}" },
+      "gridPos": { "h": 6, "w": 6, "x": 6, "y": 21 },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "dB", "min": -22, "max": -3, "decimals": 0, "noValue": "–",
+          "thresholds": { "mode": "absolute", "steps": [
+            { "color": "red", "value": null },
+            { "color": "orange", "value": -18 },
+            { "color": "yellow", "value": -14 },
+            { "color": "green", "value": -10 }
+          ]},
+          "color": { "mode": "thresholds" }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+        "showThresholdLabels": false, "showThresholdMarkers": true
+      },
+      "targets": [
+        { "refId": "A", "datasource": { "type": "influxdb", "uid": "${DS_INFLUXDB}" }, "rawQuery": true, "resultFormat": "time_series", "query": "SELECT last(\"value\") FROM \"$instance.lte.rsrq\" WHERE $timeFilter" }
+      ]
+    },
+    {
+      "id": 22,
+      "type": "gauge",
+      "title": "LTE SINR",
+      "datasource": { "type": "influxdb", "uid": "${DS_INFLUXDB}" },
+      "gridPos": { "h": 6, "w": 6, "x": 12, "y": 21 },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "dB", "min": -10, "max": 40, "decimals": 0, "noValue": "–",
+          "thresholds": { "mode": "absolute", "steps": [
+            { "color": "red", "value": null },
+            { "color": "orange", "value": 0 },
+            { "color": "yellow", "value": 10 },
+            { "color": "green", "value": 20 }
+          ]},
+          "color": { "mode": "thresholds" }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+        "showThresholdLabels": false, "showThresholdMarkers": true
+      },
+      "targets": [
+        { "refId": "A", "datasource": { "type": "influxdb", "uid": "${DS_INFLUXDB}" }, "rawQuery": true, "resultFormat": "time_series", "query": "SELECT last(\"value\") FROM \"$instance.lte.sinr\" WHERE $timeFilter" }
+      ]
+    },
+    {
+      "id": 23,
+      "type": "gauge",
+      "title": "LTE RSSI",
+      "datasource": { "type": "influxdb", "uid": "${DS_INFLUXDB}" },
+      "gridPos": { "h": 6, "w": 6, "x": 18, "y": 21 },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "dBm", "min": -110, "max": -45, "decimals": 0, "noValue": "–",
+          "thresholds": { "mode": "absolute", "steps": [
+            { "color": "red", "value": null },
+            { "color": "orange", "value": -90 },
+            { "color": "yellow", "value": -75 },
+            { "color": "green", "value": -65 }
+          ]},
+          "color": { "mode": "thresholds" }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+        "showThresholdLabels": false, "showThresholdMarkers": true
+      },
+      "targets": [
+        { "refId": "A", "datasource": { "type": "influxdb", "uid": "${DS_INFLUXDB}" }, "rawQuery": true, "resultFormat": "time_series", "query": "SELECT last(\"value\") FROM \"$instance.lte.rssi\" WHERE $timeFilter" }
+      ]
+    },
+    {
+      "id": 24,
+      "type": "timeseries",
+      "title": "LTE Signalverlauf",
+      "datasource": { "type": "influxdb", "uid": "${DS_INFLUXDB}" },
+      "gridPos": { "h": 8, "w": 24, "x": 0, "y": 27 },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "drawStyle": "line", "lineInterpolation": "smooth", "lineWidth": 2,
+            "fillOpacity": 8, "showPoints": "never", "spanNulls": true, "axisPlacement": "auto"
+          },
+          "color": { "mode": "palette-classic" }, "noValue": "–"
+        },
+        "overrides": [
+          { "matcher": { "id": "byName", "options": "RSRP (dBm)" }, "properties": [{ "id": "custom.axisPlacement", "value": "left" }] },
+          { "matcher": { "id": "byName", "options": "RSSI (dBm)" }, "properties": [{ "id": "custom.axisPlacement", "value": "left" }] },
+          { "matcher": { "id": "byName", "options": "RSRQ (dB)" }, "properties": [{ "id": "custom.axisPlacement", "value": "right" }] },
+          { "matcher": { "id": "byName", "options": "SINR (dB)" }, "properties": [{ "id": "custom.axisPlacement", "value": "right" }] }
+        ]
+      },
+      "options": {
+        "legend": { "displayMode": "table", "placement": "bottom", "calcs": ["last", "min", "max", "mean"] },
+        "tooltip": { "mode": "multi", "sort": "none" }
+      },
+      "targets": [
+        { "refId": "A", "datasource": { "type": "influxdb", "uid": "${DS_INFLUXDB}" }, "alias": "RSRP (dBm)", "rawQuery": true, "resultFormat": "time_series", "query": "SELECT mean(\"value\") FROM \"$instance.lte.rsrp\" WHERE $timeFilter GROUP BY time($__interval) fill(previous)" },
+        { "refId": "B", "datasource": { "type": "influxdb", "uid": "${DS_INFLUXDB}" }, "alias": "RSRQ (dB)", "rawQuery": true, "resultFormat": "time_series", "query": "SELECT mean(\"value\") FROM \"$instance.lte.rsrq\" WHERE $timeFilter GROUP BY time($__interval) fill(previous)" },
+        { "refId": "C", "datasource": { "type": "influxdb", "uid": "${DS_INFLUXDB}" }, "alias": "SINR (dB)", "rawQuery": true, "resultFormat": "time_series", "query": "SELECT mean(\"value\") FROM \"$instance.lte.sinr\" WHERE $timeFilter GROUP BY time($__interval) fill(previous)" },
+        { "refId": "D", "datasource": { "type": "influxdb", "uid": "${DS_INFLUXDB}" }, "alias": "RSSI (dBm)", "rawQuery": true, "resultFormat": "time_series", "query": "SELECT mean(\"value\") FROM \"$instance.lte.rssi\" WHERE $timeFilter GROUP BY time($__interval) fill(previous)" }
+      ]
+    },
+
+    {
+      "id": 103,
+      "type": "row",
+      "title": "Vergleich LTE ↔ 5G",
+      "collapsed": false,
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 35 },
+      "panels": []
+    },
+    {
+      "id": 30,
+      "type": "timeseries",
+      "title": "RSRP – LTE vs. 5G",
+      "datasource": { "type": "influxdb", "uid": "${DS_INFLUXDB}" },
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 36 },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "dBm",
+          "custom": { "drawStyle": "line", "lineInterpolation": "smooth", "lineWidth": 2, "fillOpacity": 10, "showPoints": "never", "spanNulls": true },
+          "color": { "mode": "palette-classic" }, "noValue": "–"
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": { "displayMode": "table", "placement": "bottom", "calcs": ["last", "min", "max", "mean"] },
+        "tooltip": { "mode": "multi", "sort": "none" }
+      },
+      "targets": [
+        { "refId": "A", "datasource": { "type": "influxdb", "uid": "${DS_INFLUXDB}" }, "alias": "LTE RSRP", "rawQuery": true, "resultFormat": "time_series", "query": "SELECT mean(\"value\") FROM \"$instance.lte.rsrp\" WHERE $timeFilter GROUP BY time($__interval) fill(previous)" },
+        { "refId": "B", "datasource": { "type": "influxdb", "uid": "${DS_INFLUXDB}" }, "alias": "5G RSRP", "rawQuery": true, "resultFormat": "time_series", "query": "SELECT mean(\"value\") FROM \"$instance.nr5g.rsrp\" WHERE $timeFilter GROUP BY time($__interval) fill(previous)" }
+      ]
+    },
+    {
+      "id": 31,
+      "type": "timeseries",
+      "title": "SINR – LTE vs. 5G",
+      "datasource": { "type": "influxdb", "uid": "${DS_INFLUXDB}" },
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 36 },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "dB",
+          "custom": { "drawStyle": "line", "lineInterpolation": "smooth", "lineWidth": 2, "fillOpacity": 10, "showPoints": "never", "spanNulls": true },
+          "color": { "mode": "palette-classic" }, "noValue": "–"
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": { "displayMode": "table", "placement": "bottom", "calcs": ["last", "min", "max", "mean"] },
+        "tooltip": { "mode": "multi", "sort": "none" }
+      },
+      "targets": [
+        { "refId": "A", "datasource": { "type": "influxdb", "uid": "${DS_INFLUXDB}" }, "alias": "LTE SINR", "rawQuery": true, "resultFormat": "time_series", "query": "SELECT mean(\"value\") FROM \"$instance.lte.sinr\" WHERE $timeFilter GROUP BY time($__interval) fill(previous)" },
+        { "refId": "B", "datasource": { "type": "influxdb", "uid": "${DS_INFLUXDB}" }, "alias": "5G SINR", "rawQuery": true, "resultFormat": "time_series", "query": "SELECT mean(\"value\") FROM \"$instance.nr5g.sinr\" WHERE $timeFilter GROUP BY time($__interval) fill(previous)" }
+      ]
+    },
+
+    {
+      "id": 104,
+      "type": "row",
+      "title": "Zell-Info",
+      "collapsed": false,
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 44 },
+      "panels": []
+    },
+    {
+      "id": 40, "type": "stat", "title": "LTE PCI",
+      "datasource": { "type": "influxdb", "uid": "${DS_INFLUXDB}" },
+      "gridPos": { "h": 4, "w": 4, "x": 0, "y": 45 },
+      "fieldConfig": { "defaults": { "unit": "none", "decimals": 0, "color": { "mode": "fixed", "fixedColor": "blue" }, "noValue": "–" }, "overrides": [] },
+      "options": { "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false }, "colorMode": "none", "graphMode": "none", "justifyMode": "center", "textMode": "value" },
+      "targets": [ { "refId": "A", "datasource": { "type": "influxdb", "uid": "${DS_INFLUXDB}" }, "rawQuery": true, "resultFormat": "time_series", "query": "SELECT last(\"value\") FROM \"$instance.lte.pciDec\" WHERE $timeFilter" } ]
+    },
+    {
+      "id": 41, "type": "stat", "title": "LTE ARFCN",
+      "datasource": { "type": "influxdb", "uid": "${DS_INFLUXDB}" },
+      "gridPos": { "h": 4, "w": 4, "x": 4, "y": 45 },
+      "fieldConfig": { "defaults": { "color": { "mode": "fixed", "fixedColor": "blue" }, "noValue": "–" }, "overrides": [] },
+      "options": { "reduceOptions": { "calcs": ["lastNotNull"], "fields": "last", "values": false }, "colorMode": "none", "graphMode": "none", "justifyMode": "center", "textMode": "value" },
+      "targets": [ { "refId": "A", "datasource": { "type": "influxdb", "uid": "${DS_INFLUXDB}" }, "rawQuery": true, "resultFormat": "table", "query": "SELECT last(\"value\") FROM \"$instance.lte.arfcn\" WHERE $timeFilter" } ]
+    },
+    {
+      "id": 42, "type": "stat", "title": "LTE Bandbreite",
+      "datasource": { "type": "influxdb", "uid": "${DS_INFLUXDB}" },
+      "gridPos": { "h": 4, "w": 4, "x": 8, "y": 45 },
+      "fieldConfig": { "defaults": { "color": { "mode": "fixed", "fixedColor": "blue" }, "noValue": "–" }, "overrides": [] },
+      "options": { "reduceOptions": { "calcs": ["lastNotNull"], "fields": "last", "values": false }, "colorMode": "none", "graphMode": "none", "justifyMode": "center", "textMode": "value" },
+      "targets": [ { "refId": "A", "datasource": { "type": "influxdb", "uid": "${DS_INFLUXDB}" }, "rawQuery": true, "resultFormat": "table", "query": "SELECT last(\"value\") FROM \"$instance.lte.bandwidth\" WHERE $timeFilter" } ]
+    },
+    {
+      "id": 43, "type": "stat", "title": "5G PCI",
+      "datasource": { "type": "influxdb", "uid": "${DS_INFLUXDB}" },
+      "gridPos": { "h": 4, "w": 4, "x": 12, "y": 45 },
+      "fieldConfig": { "defaults": { "unit": "none", "decimals": 0, "color": { "mode": "fixed", "fixedColor": "green" }, "noValue": "–" }, "overrides": [] },
+      "options": { "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false }, "colorMode": "none", "graphMode": "none", "justifyMode": "center", "textMode": "value" },
+      "targets": [ { "refId": "A", "datasource": { "type": "influxdb", "uid": "${DS_INFLUXDB}" }, "rawQuery": true, "resultFormat": "time_series", "query": "SELECT last(\"value\") FROM \"$instance.nr5g.pciDec\" WHERE $timeFilter" } ]
+    },
+    {
+      "id": 44, "type": "stat", "title": "5G ARFCN",
+      "datasource": { "type": "influxdb", "uid": "${DS_INFLUXDB}" },
+      "gridPos": { "h": 4, "w": 4, "x": 16, "y": 45 },
+      "fieldConfig": { "defaults": { "color": { "mode": "fixed", "fixedColor": "green" }, "noValue": "–" }, "overrides": [] },
+      "options": { "reduceOptions": { "calcs": ["lastNotNull"], "fields": "last", "values": false }, "colorMode": "none", "graphMode": "none", "justifyMode": "center", "textMode": "value" },
+      "targets": [ { "refId": "A", "datasource": { "type": "influxdb", "uid": "${DS_INFLUXDB}" }, "rawQuery": true, "resultFormat": "table", "query": "SELECT last(\"value\") FROM \"$instance.nr5g.arfcn\" WHERE $timeFilter" } ]
+    },
+    {
+      "id": 45, "type": "stat", "title": "5G Bandbreite",
+      "datasource": { "type": "influxdb", "uid": "${DS_INFLUXDB}" },
+      "gridPos": { "h": 4, "w": 4, "x": 20, "y": 45 },
+      "fieldConfig": { "defaults": { "color": { "mode": "fixed", "fixedColor": "green" }, "noValue": "–" }, "overrides": [] },
+      "options": { "reduceOptions": { "calcs": ["lastNotNull"], "fields": "last", "values": false }, "colorMode": "none", "graphMode": "none", "justifyMode": "center", "textMode": "value" },
+      "targets": [ { "refId": "A", "datasource": { "type": "influxdb", "uid": "${DS_INFLUXDB}" }, "rawQuery": true, "resultFormat": "table", "query": "SELECT last(\"value\") FROM \"$instance.nr5g.bandwidth\" WHERE $timeFilter" } ]
+    },
+
+    {
+      "id": 105,
+      "type": "row",
+      "title": "LTE Carrier Aggregation – Sekundärzellen (SCC)",
+      "collapsed": false,
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 49 },
+      "panels": []
+    },
+    {
+      "id": 50,
+      "type": "timeseries",
+      "title": "SCC RSRP (Sekundärzellen)",
+      "datasource": { "type": "influxdb", "uid": "${DS_INFLUXDB}" },
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 50 },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "dBm",
+          "custom": { "drawStyle": "line", "lineInterpolation": "smooth", "lineWidth": 2, "fillOpacity": 8, "showPoints": "never", "spanNulls": true },
+          "color": { "mode": "palette-classic" }, "noValue": "–"
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": { "displayMode": "table", "placement": "bottom", "calcs": ["last"] },
+        "tooltip": { "mode": "multi", "sort": "none" }
+      },
+      "targets": [
+        { "refId": "A", "datasource": { "type": "influxdb", "uid": "${DS_INFLUXDB}" }, "alias": "SCC0", "rawQuery": true, "resultFormat": "time_series", "query": "SELECT mean(\"value\") FROM \"$instance.lte.scc0.rsrp\" WHERE $timeFilter GROUP BY time($__interval) fill(previous)" },
+        { "refId": "B", "datasource": { "type": "influxdb", "uid": "${DS_INFLUXDB}" }, "alias": "SCC1", "rawQuery": true, "resultFormat": "time_series", "query": "SELECT mean(\"value\") FROM \"$instance.lte.scc1.rsrp\" WHERE $timeFilter GROUP BY time($__interval) fill(previous)" },
+        { "refId": "C", "datasource": { "type": "influxdb", "uid": "${DS_INFLUXDB}" }, "alias": "SCC2", "rawQuery": true, "resultFormat": "time_series", "query": "SELECT mean(\"value\") FROM \"$instance.lte.scc2.rsrp\" WHERE $timeFilter GROUP BY time($__interval) fill(previous)" },
+        { "refId": "D", "datasource": { "type": "influxdb", "uid": "${DS_INFLUXDB}" }, "alias": "SCC3", "rawQuery": true, "resultFormat": "time_series", "query": "SELECT mean(\"value\") FROM \"$instance.lte.scc3.rsrp\" WHERE $timeFilter GROUP BY time($__interval) fill(previous)" }
+      ]
+    },
+    {
+      "id": 51,
+      "type": "timeseries",
+      "title": "SCC SINR (Sekundärzellen)",
+      "datasource": { "type": "influxdb", "uid": "${DS_INFLUXDB}" },
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 50 },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "dB",
+          "custom": { "drawStyle": "line", "lineInterpolation": "smooth", "lineWidth": 2, "fillOpacity": 8, "showPoints": "never", "spanNulls": true },
+          "color": { "mode": "palette-classic" }, "noValue": "–"
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": { "displayMode": "table", "placement": "bottom", "calcs": ["last"] },
+        "tooltip": { "mode": "multi", "sort": "none" }
+      },
+      "targets": [
+        { "refId": "A", "datasource": { "type": "influxdb", "uid": "${DS_INFLUXDB}" }, "alias": "SCC0", "rawQuery": true, "resultFormat": "time_series", "query": "SELECT mean(\"value\") FROM \"$instance.lte.scc0.sinr\" WHERE $timeFilter GROUP BY time($__interval) fill(previous)" },
+        { "refId": "B", "datasource": { "type": "influxdb", "uid": "${DS_INFLUXDB}" }, "alias": "SCC1", "rawQuery": true, "resultFormat": "time_series", "query": "SELECT mean(\"value\") FROM \"$instance.lte.scc1.sinr\" WHERE $timeFilter GROUP BY time($__interval) fill(previous)" },
+        { "refId": "C", "datasource": { "type": "influxdb", "uid": "${DS_INFLUXDB}" }, "alias": "SCC2", "rawQuery": true, "resultFormat": "time_series", "query": "SELECT mean(\"value\") FROM \"$instance.lte.scc2.sinr\" WHERE $timeFilter GROUP BY time($__interval) fill(previous)" },
+        { "refId": "D", "datasource": { "type": "influxdb", "uid": "${DS_INFLUXDB}" }, "alias": "SCC3", "rawQuery": true, "resultFormat": "time_series", "query": "SELECT mean(\"value\") FROM \"$instance.lte.scc3.sinr\" WHERE $timeFilter GROUP BY time($__interval) fill(previous)" }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,92 @@
+{
+  "common": {
+    "name": "zte-mc888",
+    "version": "0.0.1",
+    "news": {
+      "0.0.1": {
+        "en": "Initial release",
+        "de": "Erste Version"
+      }
+    },
+    "title": "ZTE MC888 Signal",
+    "titleLang": {
+      "en": "ZTE MC888 Signal",
+      "de": "ZTE MC888 Signal"
+    },
+    "desc": {
+      "en": "Reads LTE and 5G signal values from a ZTE MC888 router",
+      "de": "Liest LTE- und 5G-Signalwerte von einem ZTE MC888 Router aus"
+    },
+    "authors": [
+      "Stefan"
+    ],
+    "keywords": [
+      "ZTE",
+      "MC888",
+      "LTE",
+      "5G",
+      "signal"
+    ],
+    "license": "MIT",
+    "platform": "Javascript/Node.js",
+    "main": "main.js",
+    "icon": "zte-mc888.png",
+    "enabled": true,
+    "extIcon": "https://raw.githubusercontent.com/muraus/ioBroker.zte-mc888/main/admin/zte-mc888.png",
+    "readme": "",
+    "loglevel": "info",
+    "mode": "daemon",
+    "type": "network",
+    "compact": true,
+    "connectionType": "local",
+    "dataSource": "poll",
+    "adminUI": {
+      "config": "json"
+    },
+    "tier": 3,
+    "dependencies": [
+      {
+        "js-controller": ">=5.0.0"
+      }
+    ],
+    "globalDependencies": [
+      {
+        "admin": ">=6.0.0"
+      }
+    ],
+    "messagebox": false
+  },
+  "native": {
+    "ip": "192.168.0.1",
+    "useLogin": false,
+    "user": "admin",
+    "password": "",
+    "pollInterval": 30,
+    "webUiPriority": true,
+    "graceMinutes": 5
+  },
+  "objects": [],
+  "instanceObjects": [
+    {
+      "_id": "info",
+      "type": "channel",
+      "common": {
+        "name": "Information"
+      },
+      "native": {}
+    },
+    {
+      "_id": "info.connection",
+      "type": "state",
+      "common": {
+        "role": "indicator.connected",
+        "name": "Device or service connected",
+        "type": "boolean",
+        "read": true,
+        "write": false,
+        "def": false
+      },
+      "native": {}
+    }
+  ]
+}

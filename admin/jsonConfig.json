@@ -1,0 +1,65 @@
+{
+  "type": "panel",
+  "i18n": false,
+  "items": {
+    "ip": {
+      "type": "text",
+      "label": "Router IP",
+      "help": "e.g. 192.168.0.1 (varies by firmware, e.g. 192.168.254.1)",
+      "default": "192.168.0.1",
+      "sm": 12,
+      "md": 6
+    },
+    "pollInterval": {
+      "type": "number",
+      "label": "Poll interval (seconds)",
+      "help": "Minimum 5 seconds",
+      "min": 5,
+      "default": 30,
+      "sm": 12,
+      "md": 6
+    },
+    "useLogin": {
+      "type": "checkbox",
+      "label": "Login required",
+      "help": "Enable if the router API only responds after authentication",
+      "default": false,
+      "sm": 12,
+      "md": 12
+    },
+    "user": {
+      "type": "text",
+      "label": "Username",
+      "default": "admin",
+      "hidden": "!data.useLogin",
+      "sm": 12,
+      "md": 6
+    },
+    "password": {
+      "type": "password",
+      "label": "Password",
+      "hidden": "!data.useLogin",
+      "sm": 12,
+      "md": 6
+    },
+    "webUiPriority": {
+      "type": "checkbox",
+      "label": "Web UI has priority",
+      "help": "When the router web interface logs in with the same user, pause polling instead of logging back in and kicking it out",
+      "default": true,
+      "hidden": "!data.useLogin",
+      "sm": 12,
+      "md": 6
+    },
+    "graceMinutes": {
+      "type": "number",
+      "label": "Back-off after web UI login (minutes)",
+      "help": "How long to keep the last values and stay logged out after the web UI took over the session",
+      "min": 0,
+      "default": 5,
+      "hidden": "!data.useLogin || !data.webUiPriority",
+      "sm": 12,
+      "md": 6
+    }
+  }
+}

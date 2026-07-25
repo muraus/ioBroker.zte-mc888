@@ -1,0 +1,6 @@
+{
+  "require": ["test/mocha.setup.js"],
+  "watch-files": ["**/*.test.js"],
+  "recursive": true,
+  "timeout": 10000
+}

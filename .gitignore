@@ -1,0 +1,25 @@
+# Dependencies
+node_modules/
+
+# Build / pack artifacts
+*.tgz
+*.tar.gz
+
+# Logs
+*.log
+npm-debug.log*
+
+# Test / coverage output
+.nyc_output/
+coverage/
+tmp/
+.iobroker/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Environment
+.env
