@@ -70,7 +70,7 @@
       "zh-cn": "从 ZTE MC888 路由器读取 LTE 和 5G 信号值"
     },
     "authors": [
-      "Stefan"
+      "Adapterman <adapterman@proton.me>"
     ],
     "keywords": [
       "ZTE",
@@ -87,7 +87,7 @@
     "icon": "zte-mc888.png",
     "enabled": true,
     "extIcon": "https://raw.githubusercontent.com/muraus/ioBroker.zte-mc888/main/admin/zte-mc888.png",
-    "readme": "",
+    "readme": "https://github.com/muraus/ioBroker.zte-mc888/blob/main/README.md",
     "loglevel": "info",
     "mode": "daemon",
     "type": "network",

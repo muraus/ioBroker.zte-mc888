@@ -3,7 +3,8 @@
   "version": "0.0.3",
   "description": "ioBroker adapter to read LTE/5G signal values from a ZTE MC888 router",
   "author": {
-    "name": "Stefan"
+    "name": "Adapterman",
+    "email": "adapterman@proton.me"
   },
   "license": "MIT",
   "repository": {
