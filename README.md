@@ -86,6 +86,10 @@ directory (needs internet on first run).
 	Placeholder for the next version (at the beginning of the line):
 	### **WORK IN PROGRESS**
 -->
+
+### **WORK IN PROGRESS**
+- (ioBroker-Bot) Adapter requires admin >= 7.8.23 now.
+
 ### 0.0.4 (2026-07-29)
 * (Adapterman) Added the supported device section with a link to the ZTE MC888 product page
 * (Adapterman) Corrected the required Node.js version in the development section
