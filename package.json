@@ -1,6 +1,6 @@
 {
   "name": "iobroker.zte-mc888",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "ioBroker adapter to read LTE/5G signal values from a ZTE MC888 router",
   "author": {
     "name": "Adapterman",

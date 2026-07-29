@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "zte-mc888",
-    "version": "0.0.3",
+    "version": "0.0.4",
     "news": {
+      "0.0.4": {
+        "en": "Added the supported device section with a link to the ZTE MC888 product page\nCorrected the required Node.js version in the development section\nAdded the readme link to io-package.json so Admin can link the documentation\nCompleted the author information in package.json, io-package.json and LICENSE",
+        "de": "Hinzufügen des unterstützten Geräteabschnitts mit einem Link zur ZTE MC888 Produktseite\nKorrigiert die erforderliche Node.js-Version im Entwicklungsabschnitt\nHinzufügen des Readme-Links zu io-package.json, damit Admin die Dokumentation verknüpfen kann\nVervollständigen Sie die Autoreninformationen in package.json, io-package.json und LICENSE",
+        "ru": "Добавлен раздел поддерживаемого устройства со ссылкой на страницу продукта ZTE MC888\nИсправлена необходимая версия Node.js в разделе разработки\nДобавлена ссылка readme на io-package.json, чтобы Admin мог связать документацию\nЗавершена авторская информация в package.json, io-package.json и LICENSE",
+        "pt": "Adicionada a seção do dispositivo suportado com um link para a página do produto ZTE MC888\nCorrigido a versão necessária Node.js na seção de desenvolvimento\nAdicionado o link readme para io-package.json para que o administrador possa vincular a documentação\nConcluiu as informações do autor em package.json, io-package.json e LICENSE",
+        "nl": "Toegevoegd de ondersteunde apparaat sectie met een link naar de ZTE MC888 product pagina\nDe vereiste Node.js-versie gecorrigeerd in de ontwikkelingssectie\nToegevoegd de readme link naar io-package.json zodat Admin de documentatie kan koppelen\nVoltooid de auteur informatie in pakket.json, io-package.json en LICENSE",
+        "fr": "Ajout de la section de l'appareil pris en charge avec un lien vers la page du produit ZTE MC888\nCorrection de la version Node.js requise dans la section développement\nAjout du lien readme vers io-package.json afin que Admin puisse lier la documentation\nTerminé les informations de l'auteur dans package.json, io-package.json et LICENSE",
+        "it": "Aggiunto la sezione del dispositivo supportato con un link alla pagina del prodotto ZTE MC888\nCorretto la versione Node.js richiesta nella sezione sviluppo\nAggiunto il link di lettura a io-package.json così Admin può collegare la documentazione\nCompletato le informazioni dell'autore in package.json, io-package.json e LICENSE",
+        "es": "Añadido la sección del dispositivo compatible con un enlace a la página de producto ZTE MC888\nCorregido la versión Node.js requerida en la sección de desarrollo\nAñadido el enlace readme a io-package.json para que Admin pueda vincular la documentación\nCompleted la información del autor en package.json, io-package.json y LICENSE",
+        "pl": "Dodano wspieraną sekcję urządzenia z linkiem do strony produktu ZTE MC888\nPoprawiono wymaganą wersję Node.js w dziale rozwoju\nDodano link readme do jo- package.json, aby administrator mógł połączyć dokumentację\nUkończył autor informacji w package.json, jo- package.json i LICENSE",
+        "uk": "Додано розділ підтримуючого пристрою з посиланням на сторінку продукту ZTE MC888\nВиправлено необхідну версію Node.js в розділі розробки\nДодано посилання на io-package.json so Admin може посилання на документацію\nУповноважено авторську інформацію в пакеті.json, io-package.json і LICENSE",
+        "zh-cn": "添加了支持的设备部分, 链接到 ZTE MC888 产品页面\n更正了开发部分所需的Node.js版本\n添加到 io- package.json 的读取链接,使 Admin 可以链接文档\n以包件.json、io-package.json和LICENSE完成了作者的资料"
+      },
       "0.0.3": {
         "en": "Fixed a crash when the router did not answer while no login is configured\nThe admin configuration is now translated into all ioBroker languages\nAdded lint and type checking to the development setup and CI",
         "de": "Absturz behoben, wenn der Router nicht antwortet und kein Login konfiguriert ist\nDie Adapter-Konfiguration ist jetzt in allen ioBroker-Sprachen verfügbar\nLint und Typprüfung in Entwicklungsumgebung und CI ergänzt",
