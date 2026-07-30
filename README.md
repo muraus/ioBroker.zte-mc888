@@ -107,6 +107,8 @@ directory (needs internet on first run).
 ### 0.0.1 (2026-07-25)
 * (Adapterman) Initial release
 
+[Older changelogs can be found there](CHANGELOG_OLD.md)
+
 ## License
 
 MIT License
