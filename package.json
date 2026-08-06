@@ -33,9 +33,7 @@
     "main.js",
     "zte-mc888.png",
     "LICENSE",
-    "README.md",
-    "!CHANGELOG_OLD.md",
-    "!lib/**/*.test.js"
+    "README.md"
   ],
   "engines": {
     "node": ">=22"
@@ -59,7 +57,7 @@
     "glob": "^13.0.0"
   },
   "scripts": {
-    "test:js": "mocha --config test/mocharc.custom.json \"lib/**/*.test.js\" \"test/**/*.test.js\"",
+    "test:js": "mocha --config test/mocharc.custom.json \"test/**/*.test.js\"",
     "test:package": "mocha test/package --exit",
     "test:integration": "mocha test/integration --exit",
     "test": "npm run test:js && npm run test:package",

@@ -1,7 +1,7 @@
 'use strict';
 
 const { expect } = require('chai');
-const { FIELDS, CA_FIELDS, ALL_CMDS } = require('./fields');
+const { FIELDS, CA_FIELDS, ALL_CMDS } = require('../lib/fields');
 
 describe('lib/fields', () => {
     it('exposes a non-empty FIELDS list', () => {

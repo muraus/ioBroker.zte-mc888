@@ -4,7 +4,7 @@ const { expect } = require('chai');
 const http = require('node:http');
 const crypto = require('node:crypto');
 const { URL } = require('node:url');
-const { ZteClient } = require('./zteClient');
+const { ZteClient } = require('../lib/zteClient');
 
 /**
  * Spin up a tiny HTTP server that mimics the ZTE MC888 goform API so the client
