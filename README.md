@@ -130,13 +130,12 @@ Notes on building, testing and extending the adapter are in
 	Placeholder for the next version (at the beginning of the line):
 	### **WORK IN PROGRESS**
 -->
-
-### **WORK IN PROGRESS**
+### 0.0.5 (2026-08-13)
 * (Adapterman) Adapter requires admin >= 7.8.23 now.
 * (Adapterman) The poll interval is now capped at 24 h so a huge value cannot overflow the timer
 * (Adapterman) The web UI back-off is now capped at 24 h and both limits are enforced in the admin config
 * (Adapterman) New adapter icon, delivered only in the admin directory as in the ioBroker template
-* (Adapterman) Corrected and completed the list of states in the README
+* (Adapterman) Corrected and completed the list of adapter states in the README
 * (Adapterman) Removed the install section from the README and moved the development notes to DEVELOPMENT.md
 
 ### 0.0.4 (2026-07-29)
