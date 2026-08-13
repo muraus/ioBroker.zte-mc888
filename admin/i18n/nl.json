@@ -2,7 +2,7 @@
     "Router IP": "Router-IP",
     "e.g. 192.168.0.1 (varies by firmware, e.g. 192.168.254.1)": "bijv. 192.168.0.1 (verschilt per firmware, bijv. 192.168.254.1)",
     "Poll interval (seconds)": "Pollinterval (seconden)",
-    "Minimum 5 seconds": "Minimaal 5 seconden",
+    "5 to 86400 seconds (24 h)": "5 tot 86400 seconden (24 uur)",
     "Login required": "Aanmelden vereist",
     "Enable if the router API only responds after authentication": "Schakel in als de router-API alleen na authenticatie antwoordt",
     "Username": "Gebruikersnaam",

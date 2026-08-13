@@ -7,6 +7,17 @@ const { FIELDS, CA_FIELDS, ALL_CMDS } = require('./lib/fields');
 // Number of LTE secondary carrier cells to expose (scc0 .. scc{N-1}).
 const MAX_SCELLS = 4;
 
+// Bounds for the configurable poll interval (seconds). The upper bound keeps the
+// value well below the setTimeout limit of 2^31-1 ms (~24.8 days), which would
+// otherwise wrap around and make the timer fire immediately.
+const MIN_POLL_S = 5;
+const MAX_POLL_S = 86400; // 24 h
+const DEFAULT_POLL_S = 30;
+
+// Bounds for the web UI back-off (minutes).
+const MAX_GRACE_MIN = 1440; // 24 h
+const DEFAULT_GRACE_MIN = 5;
+
 // Fields the MC888 only returns on an authenticated read. If any of these
 // carries a value we know we currently hold a login session (full data);
 // otherwise we only got the public fields and need to log in.
@@ -51,9 +62,12 @@ class ZteMc888 extends utils.Adapter {
         }
 
         let interval = Number(this.config.pollInterval);
-        if (!Number.isFinite(interval) || interval < 5) {
-            this.log.warn('Poll interval invalid or below 5s, falling back to 30s.');
-            interval = 30;
+        if (!Number.isFinite(interval) || interval < MIN_POLL_S) {
+            this.log.warn(`Poll interval invalid or below ${MIN_POLL_S}s, falling back to ${DEFAULT_POLL_S}s.`);
+            interval = DEFAULT_POLL_S;
+        } else if (interval > MAX_POLL_S) {
+            this.log.warn(`Poll interval above ${MAX_POLL_S}s (24h), capping it at ${MAX_POLL_S}s.`);
+            interval = MAX_POLL_S;
         }
         this.pollIntervalMs = interval * 1000;
 
@@ -63,7 +77,10 @@ class ZteMc888 extends utils.Adapter {
         this.webUiPriority = this.config.webUiPriority !== false;
         let grace = Number(this.config.graceMinutes);
         if (!Number.isFinite(grace) || grace < 0) {
-            grace = 5;
+            grace = DEFAULT_GRACE_MIN;
+        } else if (grace > MAX_GRACE_MIN) {
+            this.log.warn(`Back-off above ${MAX_GRACE_MIN} min (24h), capping it at ${MAX_GRACE_MIN} min.`);
+            grace = MAX_GRACE_MIN;
         }
         this.graceMs = grace * 60 * 1000;
 

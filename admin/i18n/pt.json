@@ -2,7 +2,7 @@
     "Router IP": "IP do router",
     "e.g. 192.168.0.1 (varies by firmware, e.g. 192.168.254.1)": "por exemplo, 192.168.0.1 (varia conforme o firmware, por exemplo 192.168.254.1)",
     "Poll interval (seconds)": "Intervalo de consulta (segundos)",
-    "Minimum 5 seconds": "Mínimo 5 segundos",
+    "5 to 86400 seconds (24 h)": "5 a 86400 segundos (24 h)",
     "Login required": "Login necessário",
     "Enable if the router API only responds after authentication": "Ative se a API do router apenas responder após autenticação",
     "Username": "Nome de utilizador",

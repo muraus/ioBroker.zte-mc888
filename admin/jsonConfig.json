@@ -16,8 +16,9 @@
     "pollInterval": {
       "type": "number",
       "label": "Poll interval (seconds)",
-      "help": "Minimum 5 seconds",
+      "help": "5 to 86400 seconds (24 h)",
       "min": 5,
+      "max": 86400,
       "default": 30,
       "xs": 12,
       "sm": 12,
@@ -74,6 +75,7 @@
       "label": "Back-off after web UI login (minutes)",
       "help": "How long to keep the last values and stay logged out after the web UI took over the session",
       "min": 0,
+      "max": 1440,
       "default": 5,
       "hidden": "!data.useLogin || !data.webUiPriority",
       "xs": 12,

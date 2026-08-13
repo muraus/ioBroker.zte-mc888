@@ -2,7 +2,7 @@
     "Router IP": "路由器 IP",
     "e.g. 192.168.0.1 (varies by firmware, e.g. 192.168.254.1)": "例如 192.168.0.1（因固件而异，例如 192.168.254.1）",
     "Poll interval (seconds)": "轮询间隔（秒）",
-    "Minimum 5 seconds": "最少 5 秒",
+    "5 to 86400 seconds (24 h)": "5 至 86400 秒（24 小时）",
     "Login required": "需要登录",
     "Enable if the router API only responds after authentication": "如果路由器 API 仅在认证后才响应，请启用此项",
     "Username": "用户名",

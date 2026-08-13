@@ -12,15 +12,78 @@ internet connection are required.
 
 ## States
 
-- `general.networkType`, `general.mcc`, `general.mnc`
-- `lte.rsrp`, `lte.rsrq`, `lte.sinr`, `lte.rssi`, `lte.band`, `lte.bandwidth`, `lte.carrierAggregation`
-- `nr5g.rsrp`, `nr5g.rsrq`, `nr5g.sinr`, `nr5g.pci`, `nr5g.band`, `nr5g.cellId`, `nr5g.arfcn`
-- `info.connection` — true while the last poll succeeded
+All states are read-only. `…Dec` states are the decimal representation of the raw
+hexadecimal value next to them (that is what the router web interface shows).
+
+### `general`
+
+| State | Type | Unit | Description |
+| --- | --- | --- | --- |
+| `networkType` | string | | Current network type, e.g. `ENDC` or `LTE` |
+| `cellId` | string | | Cell ID as delivered by the router (hex) |
+| `cellIdDec` | number | | Cell ID as decimal number |
+
+### `lte` — LTE primary cell
+
+| State | Type | Unit | Description |
+| --- | --- | --- | --- |
+| `rsrp` | number | dBm | Reference signal received power |
+| `rsrq` | number | dB | Reference signal received quality |
+| `sinr` | number | dB | Signal to interference plus noise ratio |
+| `rssi` | number | dBm | Received signal strength |
+| `band` | string | | Band of the primary carrier, e.g. `3` |
+| `bandName` | string | | Band as reported in the cell info, e.g. `LTE BAND 3` |
+| `arfcn` | string | | Downlink EARFCN (channel number) |
+| `bandwidth` | string | | Bandwidth of the primary carrier |
+| `pci` | string | | Physical cell ID (hex) |
+| `pciDec` | number | | Physical cell ID as decimal number |
+| `carrierAggregation` | string | | Carrier aggregation state reported by the router |
+
+### `lte.scc0` … `lte.scc3` — LTE secondary carriers
+
+One channel per secondary carrier cell (up to four), each with the same states:
+
+| State | Type | Unit | Description |
+| --- | --- | --- | --- |
+| `active` | boolean | | `true` while this secondary carrier is in use |
+| `pci` | number | | Physical cell ID |
+| `band` | number | | Band |
+| `arfcn` | number | | Channel number |
+| `bandwidth` | number | MHz | Bandwidth |
+| `rsrp` | number | dBm | Reference signal received power |
+| `rsrq` | number | dB | Reference signal received quality |
+| `sinr` | number | dB | Signal to interference plus noise ratio |
+| `rssi` | number | dBm | Received signal strength |
+
+### `nr5g` — 5G NR primary cell
+
+| State | Type | Unit | Description |
+| --- | --- | --- | --- |
+| `rsrp` | number | dBm | Reference signal received power |
+| `rsrq` | number | dB | Reference signal received quality |
+| `sinr` | number | dB | Signal to interference plus noise ratio |
+| `rssi` | number | dBm | Received signal strength |
+| `band` | string | | Band, e.g. `78` |
+| `bandName` | string | | Band as reported in the cell info |
+| `arfcn` | string | | NR-ARFCN (channel number) |
+| `bandwidth` | string | | Bandwidth |
+| `pci` | string | | Physical cell ID (hex) |
+| `pciDec` | number | | Physical cell ID as decimal number |
+
+### `info`
+
+| State | Type | Unit | Description |
+| --- | --- | --- | --- |
+| `connection` | boolean | | `true` while the last poll succeeded |
+
+Without a login the router only delivers the network type and the primary RSRP/RSSI
+values; all other states stay empty. See
+[Login, sessions and the web UI](#login-sessions-and-the-web-ui).
 
 ## Configuration
 
 - **Router IP** — usually `192.168.0.1`, some firmwares use `192.168.254.1`.
-- **Poll interval** — seconds between reads (min 5).
+- **Poll interval** — seconds between reads (5 to 86400).
 - **Login required** — enable if the API only answers after authentication.
 - **Username / Password** — the router admin credentials (username defaults to `admin`).
 - **Web UI has priority** *(only with login)* — when the router web interface logs
@@ -51,35 +114,16 @@ out, disable **Web UI has priority** (or set the back-off to `0`).
 
 ## Firmware differences
 
-The raw field names (`Z5g_rsrp`, `lte_snr`, …) vary between firmware versions. If some
-states stay empty, set the adapter log level to `debug`: the raw router JSON is logged
-on every poll, so you can see the actual field names and adjust `lib/fields.js`
-accordingly.
+The router's raw field names vary between firmware versions, so on some firmwares
+individual states can stay empty. If that happens, please
+[open an issue](https://github.com/muraus/ioBroker.zte-mc888/issues) and attach a debug
+log (instance log level `debug`, which logs the raw router response) plus your firmware
+version — support for the differing field names can then be added to the adapter.
 
-The login flow uses `LOGIN_MULTI_USER` with the `AD` token
-(`MD5( MD5(cr_version + wa_inner_version) + RD )`) and password hash
-`SHA256( SHA256(password) + LD )`.
+## Contributing
 
-## Install
-
-Upload/install the adapter directory into ioBroker, then create an instance.
-
-## Development / Testing
-
-Requires Node.js >= 22 and npm.
-
-```bash
-npm install          # install dependencies (incl. the test framework)
-npm test             # unit tests + package validation
-npm run test:js      # only the unit tests (fields + zteClient, no router needed)
-npm run test:package # validate package.json / io-package.json
-npm run test:integration  # boot the adapter in a temporary js-controller
-```
-
-The unit tests run entirely offline: `lib/zteClient.test.js` spins up a local
-mock HTTP server that emulates the router's goform API, so no real ZTE MC888 is
-needed. The integration test downloads and starts a real js-controller in a temp
-directory (needs internet on first run).
+Notes on building, testing and extending the adapter are in
+[DEVELOPMENT.md](https://github.com/muraus/ioBroker.zte-mc888/blob/main/DEVELOPMENT.md).
 
 ## Changelog
 <!--
@@ -88,7 +132,12 @@ directory (needs internet on first run).
 -->
 
 ### **WORK IN PROGRESS**
-- (ioBroker-Bot) Adapter requires admin >= 7.8.23 now.
+* (Adapterman) Adapter requires admin >= 7.8.23 now.
+* (Adapterman) The poll interval is now capped at 24 h so a huge value cannot overflow the timer
+* (Adapterman) The web UI back-off is now capped at 24 h and both limits are enforced in the admin config
+* (Adapterman) New adapter icon, delivered only in the admin directory as in the ioBroker template
+* (Adapterman) Corrected and completed the list of states in the README
+* (Adapterman) Removed the install section from the README and moved the development notes to DEVELOPMENT.md
 
 ### 0.0.4 (2026-07-29)
 * (Adapterman) Added the supported device section with a link to the ZTE MC888 product page
