@@ -144,6 +144,7 @@
   ],
   "native": {
     "ip": "192.168.0.1",
+    "protocol": "http",
     "useLogin": false,
     "user": "admin",
     "password": "",

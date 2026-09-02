@@ -47,6 +47,9 @@ class ZteMc888 extends utils.Adapter {
         this.sessionActive = false;
         this.kickedUntil = 0;
 
+        // The "router only speaks HTTPS" hint is logged once per instance start.
+        this.httpsHintLogged = false;
+
         this.on('ready', this.onReady.bind(this));
         this.on('unload', this.onUnload.bind(this));
     }
@@ -84,7 +87,11 @@ class ZteMc888 extends utils.Adapter {
         }
         this.graceMs = grace * 60 * 1000;
 
-        this.client = new ZteClient(ip, { timeout: 10000 });
+        // Newer firmware serves the goform API over HTTPS only; on those devices
+        // port 80 accepts the connection and closes it right away (ECONNRESET).
+        const protocol = this.config.protocol === 'https' ? 'https' : 'http';
+        this.log.debug(`Talking to the router at ${protocol}://${ip}`);
+        this.client = new ZteClient(ip, { timeout: 10000, protocol });
 
         await this.createStates();
         this.statesCreated = true;
@@ -249,7 +256,8 @@ class ZteMc888 extends utils.Adapter {
                         'and retrying later without kicking the other session.',
                 );
             } else {
-                this.log.warn(`Poll failed: ${e.message}`);
+                this.log.warn(`Poll failed: ${this._describeError(e)}`);
+                this._hintHttps(e);
             }
             await this.setStateChangedAsync('info.connection', { val: false, ack: true });
         } finally {
@@ -272,9 +280,42 @@ class ZteMc888 extends utils.Adapter {
         try {
             return await this.client.getSignal(ALL_CMDS);
         } catch (e) {
-            this.log.debug(`Read failed: ${e.message}`);
+            this.log.debug(`Read failed: ${this._describeError(e)}`);
+            this._hintHttps(e);
             return null;
         }
+    }
+
+    /**
+     * Format an error for the log, including the transport error code when the
+     * message alone ("socket hang up") does not say what actually went wrong.
+     *
+     * @param {Error & {code?: string}} e the error to describe
+     * @returns {string} the message, with the error code appended when present
+     */
+    _describeError(e) {
+        return e.code ? `${e.message} (${e.code})` : e.message;
+    }
+
+    /**
+     * Point at the HTTPS setting when plain HTTP is reset by the router, which is
+     * what firmware versions that only serve the API over HTTPS look like.
+     *
+     * @param {Error & {code?: string}} e the error that ended the request
+     */
+    _hintHttps(e) {
+        if (this.httpsHintLogged || this.config.protocol === 'https') {
+            return;
+        }
+        if (e.code !== 'ECONNRESET' && e.code !== 'EPROTO') {
+            return;
+        }
+        this.httpsHintLogged = true;
+        this.log.info(
+            'The router closed the plain HTTP connection without answering. Newer firmware ' +
+                'serves the API over HTTPS only - try setting the protocol to HTTPS in the ' +
+                'instance settings.',
+        );
     }
 
     /**

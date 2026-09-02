@@ -1,6 +1,8 @@
 {
     "Router IP": "IP du routeur",
     "e.g. 192.168.0.1 (varies by firmware, e.g. 192.168.254.1)": "par ex. 192.168.0.1 (varie selon le firmware, par ex. 192.168.254.1)",
+    "Protocol": "Protocole",
+    "Newer firmware serves the API over HTTPS only. Use HTTPS when the router closes plain HTTP connections without answering.": "Les firmwares récents ne proposent l'API qu'en HTTPS. Utilisez HTTPS lorsque le routeur ferme les connexions HTTP simples sans répondre.",
     "Poll interval (seconds)": "Intervalle d'interrogation (secondes)",
     "5 to 86400 seconds (24 h)": "5 à 86400 secondes (24 h)",
     "Login required": "Connexion requise",

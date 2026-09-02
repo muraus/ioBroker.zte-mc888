@@ -82,7 +82,13 @@ values; all other states stay empty. See
 
 ## Configuration
 
-- **Router IP** — usually `192.168.0.1`, some firmwares use `192.168.254.1`.
+- **Router IP** — usually `192.168.0.1`, some firmwares use `192.168.254.1`. A
+  non-standard port can be appended, e.g. `192.168.0.1:8080`.
+- **Protocol** — `HTTP` (default) or `HTTPS`. Newer firmware serves the goform API
+  over HTTPS only; on those devices plain HTTP is accepted on port 80 and closed
+  immediately, which shows up in the log as `socket hang up` / `ECONNRESET`. The
+  router uses a self-signed certificate for its local web interface, so certificate
+  verification is disabled for these requests.
 - **Poll interval** — seconds between reads (5 to 86400).
 - **Login required** — enable if the API only answers after authentication.
 - **Username / Password** — the router admin credentials (username defaults to `admin`).
@@ -130,6 +136,11 @@ Notes on building, testing and extending the adapter are in
 	Placeholder for the next version (at the beginning of the line):
 	### **WORK IN PROGRESS**
 -->
+### **WORK IN PROGRESS**
+* (Adapterman) Added a protocol setting so the adapter can talk to firmware versions that serve the API over HTTPS only
+* (Adapterman) Connections are no longer kept alive, the router drops idle sockets and the reused socket failed with `socket hang up`
+* (Adapterman) Transport errors are logged with their error code and hint at the HTTPS setting when plain HTTP is reset
+
 ### 0.0.5 (2026-08-13)
 * (Adapterman) Adapter requires admin >= 7.8.23 now.
 * (Adapterman) The poll interval is now capped at 24 h so a huge value cannot overflow the timer

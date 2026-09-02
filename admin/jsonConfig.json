@@ -13,6 +13,21 @@
       "lg": 6,
       "xl": 6
     },
+    "protocol": {
+      "type": "select",
+      "label": "Protocol",
+      "help": "Newer firmware serves the API over HTTPS only. Use HTTPS when the router closes plain HTTP connections without answering.",
+      "options": [
+        { "label": "HTTP", "value": "http" },
+        { "label": "HTTPS", "value": "https" }
+      ],
+      "default": "http",
+      "xs": 12,
+      "sm": 12,
+      "md": 6,
+      "lg": 6,
+      "xl": 6
+    },
     "pollInterval": {
       "type": "number",
       "label": "Poll interval (seconds)",

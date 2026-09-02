@@ -1,6 +1,8 @@
 {
     "Router IP": "路由器 IP",
     "e.g. 192.168.0.1 (varies by firmware, e.g. 192.168.254.1)": "例如 192.168.0.1（因固件而异，例如 192.168.254.1）",
+    "Protocol": "协议",
+    "Newer firmware serves the API over HTTPS only. Use HTTPS when the router closes plain HTTP connections without answering.": "较新的固件仅通过 HTTPS 提供 API。如果路由器在不响应的情况下关闭普通 HTTP 连接，请使用 HTTPS。",
     "Poll interval (seconds)": "轮询间隔（秒）",
     "5 to 86400 seconds (24 h)": "5 至 86400 秒（24 小时）",
     "Login required": "需要登录",

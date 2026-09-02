@@ -13,15 +13,19 @@ const { ZteClient } = require('../lib/zteClient');
  * @param {object} opts mock router options
  * @param {object} [opts.values] map of field -> value returned by GET
  * @param {(bodyParams: object) => object} [opts.onPost] handler returning the response object for POST
- * @returns {Promise<{client: ZteClient, close: () => Promise<void>, posts: object[]}>} the client bound to the
- *          mock router, a close helper and the list of received POST bodies
+ * @returns {Promise<{client: ZteClient, close: () => Promise<void>, posts: object[],
+ *          headers: Record<string,string|string[]|undefined>[], port: number}>} the client bound to
+ *          the mock router, a close helper, the list of received POST bodies, the headers of every
+ *          received request and the port the mock listens on
  */
 function startMockRouter(opts = {}) {
     const values = opts.values || {};
     const posts = [];
+    const headers = [];
 
     const server = http.createServer((req, res) => {
         const url = new URL(req.url || '/', 'http://localhost');
+        headers.push(req.headers);
 
         if (req.method === 'GET' && url.pathname === '/goform/goform_get_cmd_process') {
             const cmd = url.searchParams.get('cmd') || '';
@@ -65,6 +69,8 @@ function startMockRouter(opts = {}) {
                 client: new ZteClient(`127.0.0.1:${port}`, { timeout: 2000 }),
                 close: () => new Promise(r => server.close(() => r())),
                 posts,
+                headers,
+                port,
             });
         });
     });
@@ -83,6 +89,45 @@ describe('lib/zteClient', () => {
         it('_md5Lower and _md5Upper agree except for case', () => {
             expect(client._md5Lower('x')).to.equal(client._md5Upper('x').toLowerCase());
             expect(client._md5Lower('x')).to.match(/^[0-9a-f]{32}$/);
+        });
+    });
+
+    describe('protocol', () => {
+        let mock;
+        afterEach(() => mock && mock.close());
+
+        it('defaults to plain HTTP', () => {
+            const client = new ZteClient('192.168.0.1');
+            expect(client.protocol).to.equal('http');
+            expect(client._baseUrl()).to.equal('http://192.168.0.1');
+        });
+
+        it('switches the base URL to HTTPS when requested', () => {
+            const client = new ZteClient('192.168.0.1', { protocol: 'https' });
+            expect(client.protocol).to.equal('https');
+            expect(client._baseUrl()).to.equal('https://192.168.0.1');
+        });
+
+        it('falls back to HTTP for an unknown protocol', () => {
+            const opts = /** @type {{protocol: 'http'|'https'}} */ (/** @type {unknown} */ ({ protocol: 'ftp' }));
+            expect(new ZteClient('192.168.0.1', opts)._baseUrl()).to.equal('http://192.168.0.1');
+        });
+
+        it('never keeps sockets alive, the router drops idle connections', () => {
+            // `options` is not part of the Agent typings, but it carries the
+            // settings the agent was constructed with.
+            const keepAlive = client =>
+                /** @type {{options: import('node:http').AgentOptions}} */ (/** @type {unknown} */ (client.agent))
+                    .options.keepAlive;
+
+            expect(keepAlive(new ZteClient('192.168.0.1'))).to.equal(false);
+            expect(keepAlive(new ZteClient('192.168.0.1', { protocol: 'https' }))).to.equal(false);
+        });
+
+        it('sends a Referer that matches the base URL', async () => {
+            mock = await startMockRouter({ values: { LD: 'x' } });
+            await mock.client.getField('LD');
+            expect(mock.headers[0].referer).to.equal(`http://127.0.0.1:${mock.port}/`);
         });
     });
 

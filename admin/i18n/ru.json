@@ -1,6 +1,8 @@
 {
     "Router IP": "IP-адрес роутера",
     "e.g. 192.168.0.1 (varies by firmware, e.g. 192.168.254.1)": "например, 192.168.0.1 (зависит от прошивки, например 192.168.254.1)",
+    "Protocol": "Протокол",
+    "Newer firmware serves the API over HTTPS only. Use HTTPS when the router closes plain HTTP connections without answering.": "Новые версии прошивки предоставляют API только по HTTPS. Используйте HTTPS, если роутер закрывает обычные HTTP-соединения без ответа.",
     "Poll interval (seconds)": "Интервал опроса (секунды)",
     "5 to 86400 seconds (24 h)": "От 5 до 86400 секунд (24 ч)",
     "Login required": "Требуется вход",

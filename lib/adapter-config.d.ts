@@ -5,6 +5,7 @@ declare global {
     namespace ioBroker {
         interface AdapterConfig {
             ip: string;
+            protocol: 'http' | 'https';
             pollInterval: number;
             useLogin: boolean;
             user: string;
